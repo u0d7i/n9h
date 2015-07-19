@@ -1,0 +1,60 @@
+#!/bin/bash
+# qp - n900 helper script
+
+# default mobile data id
+G="T-Mobile"
+# default wifi id
+W="0000-000-000"
+# check with
+# gconftool -R /system/osso/connectivity/IAP
+
+case $1 in
+g+)
+    # connect 3G
+    echo "enabling radio..."
+    dbus-send --system --type=method_call --dest=com.nokia.phone.SSC /com/nokia/phone/SSC com.nokia.phone.SSC.set_radio boolean:true
+    #sleep 3
+    # be cool, check reg status
+    s=1
+    while [ "$s" -ne "0" ]
+    do
+        s=$(dbus-send --system --print-reply --dest=com.nokia.phone.net /com/nokia/phone/net Phone.Net.get_registration_status | grep byte | head -1);
+        s=${s: -1}
+        echo -n "."
+        sleep 1
+    done
+    echo
+    echo "connecting 3G ..."
+    dbus-send --system --type=method_call --dest=com.nokia.icd /com/nokia/icd com.nokia.icd.connect string:${G} uint32:0
+    ;;
+g-)
+    # disconnect 3G
+    echo "disconnecting 3G ..."
+    dbus-send --system --dest=com.nokia.icd /com/nokia/icd_ui com.nokia.icd_ui.disconnect boolean:true
+    sleep 1
+    echo "disabling radio..."
+    dbus-send --system --type=method_call --dest=com.nokia.phone.SSC /com/nokia/phone/SSC com.nokia.phone.SSC.set_radio boolean:false
+    ;;
+w+)
+    # connect wifi
+    dbus-send --system --type=method_call --dest=com.nokia.icd /com/nokia/icd com.nokia.icd.connect string:${W} uint32:0
+    ;;
+w-)
+    # disconnect wifi
+    dbus-send --system --dest=com.nokia.icd /com/nokia/icd_ui com.nokia.icd_ui.disconnect boolean:true
+    ;;
+q)
+    # shutdown
+    dbus-send --system --type=method_call --print-reply --dest=com.nokia.mce /com/nokia/mce/request com.nokia.mce.request.req_shutdown
+    ;;
+*)
+    # usage
+    echo "usage: $(basename $0) <command>"
+    echo "commands:"
+    echo "g+  connect 3G"
+    echo "g-  disconnect 3G"
+    echo "w+  connect wifi"
+    echo "w-  disconnect wifi"
+    echo "q   shutdown"
+    ;;
+esac
