@@ -45,7 +45,7 @@ w-)
     ;;
 q)
     # shutdown
-    dbus-send --system --type=method_call --print-reply --dest=com.nokia.mce /com/nokia/mce/request com.nokia.mce.request.req_shutdown
+    dbus-send --system --type=method_call --dest=com.nokia.dsme --print-reply /com/nokia/dsme/request com.nokia.dsme.request.req_shutdown
     ;;
 *)
     # usage
@@ -58,3 +58,6 @@ q)
     echo "q   shutdown"
     ;;
 esac
+
+# for more n900/maemo dbus samples
+# see http://wiki.maemo.org/User:Jebba/DBUS
