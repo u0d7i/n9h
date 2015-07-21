@@ -1,0 +1,18 @@
+# local env settings
+# source with
+#
+# . ~/.localrc
+#
+# in ~/.profile or ~/.bashrc
+
+
+# change to homedir (chroot fix)
+cd
+
+# aliases
+alias tmx='tmux -2 attach -d || tmux -2'
+alias resolv-0='cat /dev/null  > /etc/resolv.conf'
+alias resolv-g='echo "nameserver 8.8.8.8" > /etc/resolv.conf'
+alias resolv-l='echo "nameserver 192.168.10.1" > /etc/resolv.conf'
+alias publish='git add --all; git commit -m "publish"; git push origin master'
+
