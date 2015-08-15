@@ -1,0 +1,7 @@
+Remap keyboard 
+details here: http://wiki.maemo.org/Remapping_keyboard
+
+# cp /usr/share/X11/xkb/symbols/nokia_vndr/rx-51 rx-51.orig
+# cat rx-51.mod > /usr/share/X11/xkb/symbols/nokia_vndr/rx-51
+# setxkbmap
+
