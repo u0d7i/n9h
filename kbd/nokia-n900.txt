@@ -1,0 +1,2 @@
+$ wget -c http://bazaar.launchpad.net/~pali/+junk/maemo_recovery-boot/download/head:/nokian900.map-20110516185939-keikf8lhs6bo58z9-1/nokia-n900.map
+$ sudo loadkeys -b nokia-n900.map > nokia-n900.kmap
