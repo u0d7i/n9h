@@ -43,6 +43,31 @@ w-)
     # disconnect wifi
     dbus-send --system --dest=com.nokia.icd /com/nokia/icd_ui com.nokia.icd_ui.disconnect boolean:true
     ;;
+n)
+    # network status - active interfaces
+    ifconfig | (egrep '^wlan|^gprs|^usb' || echo 'none') | cut -d' ' -f1 | xargs
+    ;;
+b)
+    # battery status
+    # 
+    if which i2cget > /dev/null; then
+      # we have i2c-tools
+      CSOC=$(($(i2cget -y 2 0x55 0x2c)))  # CSOC Compensated state of charge %. CACT/LMD * 100
+      #RSOC=$(($(i2cget -y 2 0x55 0x0b))) # RSOC Relative state of charge %. NAC/LMD * 100
+      TTE=$(($(i2cget -y 2 0x55 0x16 w))) # TTE Time to Empty minutes. 65535 if charging.
+      TTF=$(($(i2cget -y 2 0x55 0x18 w))) # TTF Time to Full minutes. 65535 if no charging.`
+      echo -n "${CSOC}% "
+      if [ $TTE = 65535 ]; then
+        # charging
+        echo "charging, $TTF min. to full."
+      else
+        echo "discharding, $TTE min. to empty."
+      fi
+    else
+      echo "i2cget not available, install i2c-tools package"
+    fi
+    ;;
+    
 q)
     # shutdown
     dbus-send --system --type=method_call --dest=com.nokia.dsme --print-reply /com/nokia/dsme/request com.nokia.dsme.request.req_shutdown
@@ -55,9 +80,11 @@ q)
     echo "g-  disconnect 3G"
     echo "w+  connect wifi"
     echo "w-  disconnect wifi"
+    echo "n   network status"
+    echo "b   battery status"
     echo "q   shutdown"
     ;;
 esac
 
-# for more n900/maemo dbus samples
+# for n900/maemo dbus samples
 # see http://wiki.maemo.org/User:Jebba/DBUS
