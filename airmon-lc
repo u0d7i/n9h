@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# airmon-lc
+# simplified airmon-ng analogue
+
+# mandatory checks
+if [ $(id -u) -ne 0 ]; then
+    echo "you are not root"
+    exit
+fi
+if [ -z $(command -v iw) ]; then
+    echo "iw not installed"
+    exit
+fi
+
+IF="wmon0"
+PHY="phy0"
+
+case $1 in
+    on)
+        iw phy $PHY interface add $IF type monitor && echo done || echo ups
+        ;;
+    off)
+        iw dev ${IF} del && echo done || echo ups
+        ;;
+    list)
+        ifconfig $IF 2>/dev/null || echo ups
+        ;;
+    *)
+        # usage
+        echo "usage: $(basename $0) on|off|list"
+        ;;
+esac
