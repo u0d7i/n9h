@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# mandatory checks
+if [ $(id -u) -ne 0 ]; then
+    echo "you are not root"
+    exit
+fi
+if [ -z $(command -v iwlist) ]; then
+    echo "iwlist not installed"
+    exit
+fi
+
+# defaults
+IF="wlan0"
+# use interface name if provided
+[ -n "${1}" ] && IF=${1}
+
+iwlist ${IF} scan | \
+    egrep "Address:|Channel:|ESSID:|Encryption key:" | \
+    sed -e 's/Channel:/Ch:/' -e 's/ESSID://'  | \
+    sed 'N;N;N;s/\n//g' | \
+    awk '{printf "%s %-5s %-7s %s\n", $5,$6,$8,$9}'
+
