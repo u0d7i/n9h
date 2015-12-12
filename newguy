@@ -29,3 +29,4 @@ capinfos -csuaeix ${FN} || exit
 echo "----------"
 
 #we have a valid pcap file we can work with
+
