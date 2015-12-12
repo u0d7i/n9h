@@ -13,9 +13,10 @@ fi
 
 # check if our argument is an interface or a file
 if ip link show dev $1 > /dev/null 2>&1; then
+    echo "capturing for ${T} seconds on $1 ..."
     FN="${TS}_${T}s.cap"
     timeout --preserve-status ${T} tcpdump -i $1 -w ${FN} -s0 || exit
-    echo "last exit code: $?"
+    echo "----------"
 else
     FN=$1
     [ -e $FN ] || {
@@ -25,5 +26,6 @@ else
 fi
 
 capinfos -csuaeix ${FN} || exit
+echo "----------"
 
 #we have a valid pcap file we can work with
