@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# newguy - network observer and guesser
+
+T=60 # default timeout, adjustsnle via options later
+TS=$(date +%Y%m%d%H%M%S) # timestamp
+
+# usage if no args
+if [  $# -eq 0 ]; then
+    echo "usage: $0 <interface>|<file>"
+    exit
+fi
+
+# check if our argument is an interface or a file
+if /sbin/ifconfig $1 > /dev/null 2>&1; then
+    FN="${TS}_${T}s.cap"
+    timeout ${T} tcpdump -i $1 -w ${FN} -s0 || exit
+else
+    FN=$1
+    [ -e $FN ] || {
+      echo "no such file or interface"
+      exit
+    }
+fi
+
+capinfos -csuaeix ${FN} || exit
+
+#we have a valid pcap file we can work with
