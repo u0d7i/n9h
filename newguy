@@ -13,9 +13,12 @@ fi
 
 # check if our argument is an interface or a file
 if ip link show dev $1 > /dev/null 2>&1; then
-    echo "capturing for ${T} seconds on $1 ..."
-    FN="${TS}_${T}s.cap"
-    timeout --preserve-status ${T} tcpdump -i $1 -w ${FN} -s0 || exit
+    echo "-- capturing for ${T} seconds on $1 ..."
+    FN="${TS}-${1}-${T}s.cap"
+    timeout ${T} tcpdump -i $1 -w ${FN} -s0
+    # older versions of timeout don't support
+    # '--preserve-status', so, using dirty hack
+    [ $? -eq 124 ] || exit
     echo "----------"
 else
     FN=$1
