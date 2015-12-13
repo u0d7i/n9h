@@ -15,7 +15,7 @@ IF="wlan0"
 # use interface name if provided
 [ -n "${1}" ] && IF=${1}
 
-# wlist output differs across versions
+# iwlist output differs across versions
 # don't expect compatibility
 iwlist ${IF} scan | \
     egrep "Address:|Channel:|ESSID:|Encryption key:" | \
