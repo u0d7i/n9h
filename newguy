@@ -3,7 +3,7 @@
 # newguy - network observer and guesser
 
 T=60 # default timeout, adjustable via options later
-TS=$(date +%Y%m%d%H%M%S) # timestamp
+TS=$(date +%Y%m%d-%H%M%S) # timestamp
 
 # usage if no args
 if [  $# -eq 0 ]; then
