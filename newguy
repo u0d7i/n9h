@@ -5,11 +5,35 @@
 T=60 # default timeout, adjustable via options later
 TS=$(date +%Y%m%d-%H%M%S) # timestamp
 
-# usage if no args
-if [  $# -eq 0 ]; then
-    echo "usage: $0 <interface>|<file>"
+
+usage() {
+    echo
+    echo "usage: $0 [options] <interface>|<file>"
+    echo "options:"
+    echo " -n          don't parse, save only"
+    echo " -t <time>   time in sec (default 60)"
+    echo
     exit
-fi
+}
+
+# get options if any
+while getopts "nt:" opt; do
+    case $opt in
+        n)
+            SAVEONLY=1
+            ;;
+        t)
+            T=$OPTARG
+            ;;
+        \?)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# usage if no args
+[  $# -eq 0 ] && usage
 
 # check if our argument is an interface or a file
 if ip link show dev $1 > /dev/null 2>&1; then
@@ -32,4 +56,6 @@ capinfos -csuaeix ${FN} || exit
 echo "----------"
 
 #we have a valid pcap file we can work with
+# should we?
+[[ $SAVEONLY ]] && exit
 
