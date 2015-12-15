@@ -17,9 +17,17 @@ IF="wlan0"
 
 # iwlist output differs across versions
 # don't expect compatibility
+# don't trust iwlist on the order
 iwlist ${IF} scan | \
     egrep "Address:|Channel:|ESSID:|Encryption key:" | \
-    sed -e 's/Channel:/Ch:/' -e 's/ESSID://' -e 's/Encryption //' | \
+    sed -e 's/Channel:/ch:/' -e 's/Encryption //' | \
     sed 'N;N;N;s/\n/;/g' | \
-    sed -e 's/^[ \t]*//' -e 's/;[ \t]*/;/g' -e 's/ - Address: /;/' | \
-    awk -F\; '{printf "%s %-5s %-7s %s\n", $2,$4,$5,$3}'
+    sed -e 's/^[ \t]*//' -e 's/;[ \t]*/;/g' -e 's/Cell.*- Address: /BSSID:/' | \
+    while read line
+    do
+        for a in $(seq 4)
+        do
+            echo $line | cut -d\; -f${a} | sort
+        done | sed -e 'N;N;N;s/\n/;/g' -e 's/[BE]SSID://g'
+    done | \
+    awk -F\; '{printf "%s %-5s %-7s %s\n", $1,$2,$3,$4}'
