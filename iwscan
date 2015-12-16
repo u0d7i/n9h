@@ -27,7 +27,7 @@ iwlist ${IF} scan | \
     do
         for a in $(seq 4)
         do
-            echo $line | cut -d\; -f${a} | sort
-        done | sed -e 'N;N;N;s/\n/;/g' -e 's/[BE]SSID://g'
+            echo $line | cut -d\; -f${a}
+        done | sort | sed -e 'N;N;N;s/\n/;/g' -e 's/[BE]SSID://g'
     done | \
-    awk -F\; '{printf "%s %-5s %-7s %s\n", $1,$2,$3,$4}'
+    awk -F\; '{printf "%s %-5s %-7s %s\n", $1,$2,$4,$3}'
