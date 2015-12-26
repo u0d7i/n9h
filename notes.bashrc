@@ -22,7 +22,7 @@ notes(){
 notes-find(){
     if [ -n "$*" ]; then
         if ACK=$(command -v ack-grep); then
-            ${ACK} -iaH "$*" ${NOTES}/
+            (cd ${NOTES}; ${ACK} --pager='sed "s/\.txt//"' -iaH "$*" *.txt)
         else
             echo 'ack-grep is not installed'
         fi
