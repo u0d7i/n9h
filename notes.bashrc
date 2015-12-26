@@ -13,7 +13,7 @@ mkdir -p ${NOTES}
 
 notes(){
     if [ -n "$*" ]; then
-        vim ${NOTES}/$*.txt
+        vim ${NOTES}/"$*".txt
     else
         vim ${NOTES}
     fi
@@ -22,7 +22,7 @@ notes(){
 notes-find(){
     if [ -n "$*" ]; then
         if ACK=$(command -v ack-grep); then
-            ${ACK} -iaH $1 ${NOTES}/
+            ${ACK} -iaH "$*" ${NOTES}/
         else
             echo 'ack-grep is not installed'
         fi
@@ -37,10 +37,12 @@ notes-daily(){
 
 # autocompletion stuff
 _notes(){
-    local cur names
+    local cur names IFS
 
     cur="${COMP_WORDS[COMP_CWORD]}"
     names=$(cd ${NOTES}; ls *.txt | sed 's/\.txt$//')
+    # space is not a field separator here
+    IFS=$'\t\n'
 
     COMPREPLY=( $(compgen -W "${names}" -- ${cur}) )
     return 0
