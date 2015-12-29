@@ -12,8 +12,9 @@ case $1 in
 g+)
     # connect 3G
     echo "enabling radio..."
-    dbus-send --system --type=method_call --dest=com.nokia.phone.SSC /com/nokia/phone/SSC com.nokia.phone.SSC.set_radio boolean:true
-    #sleep 3
+    dbus-send --system --type=method_call --dest=com.nokia.phone.SSC /com/nokia/phone/SSC \
+                              com.nokia.phone.SSC.set_radio \
+                              boolean:true
     # be cool, check reg status
     s=1
     while [ "$s" -ne "0" ]
@@ -25,23 +26,34 @@ g+)
     done
     echo
     echo "connecting 3G ..."
-    dbus-send --system --type=method_call --dest=com.nokia.icd /com/nokia/icd com.nokia.icd.connect string:${G} uint32:0
+    dbus-send --system --type=method_call --dest=com.nokia.icd /com/nokia/icd \
+                              com.nokia.icd.connect \
+                              string:${G} \
+                              uint32:0
     ;;
 g-)
     # disconnect 3G
     echo "disconnecting 3G ..."
-    dbus-send --system --dest=com.nokia.icd /com/nokia/icd_ui com.nokia.icd_ui.disconnect boolean:true
+    dbus-send --system --dest=com.nokia.icd /com/nokia/icd_ui com.nokia.icd_ui.disconnect \
+                              boolean:true
     sleep 1
     echo "disabling radio..."
-    dbus-send --system --type=method_call --dest=com.nokia.phone.SSC /com/nokia/phone/SSC com.nokia.phone.SSC.set_radio boolean:false
+    dbus-send --system --type=method_call --dest=com.nokia.phone.SSC /com/nokia/phone/SSC \
+                              com.nokia.phone.SSC.set_radio \
+                              boolean:false
     ;;
 w+)
     # connect wifi
-    dbus-send --system --type=method_call --dest=com.nokia.icd /com/nokia/icd com.nokia.icd.connect string:${W} uint32:0
+    dbus-send --system --type=method_call --dest=com.nokia.icd /com/nokia/icd \
+                              com.nokia.icd.connect \
+                              string:${W} \
+                              uint32:0
     ;;
 w-)
     # disconnect wifi
-    dbus-send --system --dest=com.nokia.icd /com/nokia/icd_ui com.nokia.icd_ui.disconnect boolean:true
+    dbus-send --system --dest=com.nokia.icd /com/nokia/icd_ui \
+                              com.nokia.icd_ui.disconnect \
+                              boolean:true
     ;;
 n)
     # network status - active interfaces
@@ -49,11 +61,12 @@ n)
     ;;
 b)
     # battery status
-    # 
+    # based on
+    # https://wiki.maemo.org/N900_Hardware_Charge_Meter/bq-script
+    # kernel module independent, speaks hw directly via i2c
     if which i2cget > /dev/null; then
       # we have i2c-tools
       CSOC=$(($(i2cget -y 2 0x55 0x2c)))  # CSOC Compensated state of charge %. CACT/LMD * 100
-      #RSOC=$(($(i2cget -y 2 0x55 0x0b))) # RSOC Relative state of charge %. NAC/LMD * 100
       TTE=$(($(i2cget -y 2 0x55 0x16 w))) # TTE Time to Empty minutes. 65535 if charging.
       TTF=$(($(i2cget -y 2 0x55 0x18 w))) # TTF Time to Full minutes. 65535 if no charging.`
       echo -n "${CSOC}% "
@@ -71,18 +84,25 @@ b)
 l)
     # lock
     # this one is code-lock:
-    dbus-send --system --type=method_call --dest=com.nokia.system_ui /com/nokia/system_ui/request com.nokia.system_ui.request.devlock_open \
-                                            string:'com.nokia.mce' \
-                                            string:'/com/nokia/mce/request' \
-                                            string:'com.nokia.mce.request' \
-                                            string:'devlock_callback' \
-                                            uint32:'3'
+    dbus-send --system --type=method_call --dest=com.nokia.mce /com/nokia/mce/request \
+                              com.nokia.mce.request.devlock_callback\
+                              int32:0
+#    dbus-send --system --type=method_call --dest=com.nokia.system_ui /com/nokia/system_ui/request \
+#                             com.nokia.system_ui.request.devlock_open \
+#                              string:'com.nokia.mce' \
+#                              string:'/com/nokia/mce/request' \
+#                              string:'com.nokia.mce.request' \
+#                              string:'devlock_callback' \
+#                              uint32:'3'
     # this one blanks the screen afterwards
-    dbus-send --system --type=method_call --dest=com.nokia.mce /com/nokia/mce/request com.nokia.mce.request.req_tklock_mode_change string:"locked"
+#    dbus-send --system --type=method_call --dest=com.nokia.mce /com/nokia/mce/request \
+#                              com.nokia.mce.request.req_tklock_mode_change \
+#                              string:"locked"
     ;;
 q)
     # shutdown
-    dbus-send --system --type=method_call --dest=com.nokia.dsme --print-reply /com/nokia/dsme/request com.nokia.dsme.request.req_shutdown
+    dbus-send --system --type=method_call --dest=com.nokia.dsme --print-reply /com/nokia/dsme/request \
+                              com.nokia.dsme.request.req_shutdown
     ;;
 *)
     # usage
@@ -101,3 +121,4 @@ esac
 
 # for n900/maemo dbus samples
 # see http://wiki.maemo.org/User:Jebba/DBUS
+# https://wiki.maemo.org/Phone_control
