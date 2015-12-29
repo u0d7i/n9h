@@ -4,7 +4,7 @@
 # default mobile data id
 G="T-Mobile"
 # default wifi id
-W="0000-000-000"
+W="00000000-dead-beaf-1337-00000"
 # check with
 # gconftool -R /system/osso/connectivity/IAP
 
@@ -12,9 +12,10 @@ case $1 in
 g+)
     # connect 3G
     echo "enabling radio..."
-    dbus-send --system --type=method_call --dest=com.nokia.phone.SSC /com/nokia/phone/SSC \
-                              com.nokia.phone.SSC.set_radio \
-                              boolean:true
+    dbus-send --system --type=method_call --dest=com.nokia.phone.SSC \
+        /com/nokia/phone/SSC \
+        com.nokia.phone.SSC.set_radio \
+        boolean:true
     # be cool, check reg status
     s=1
     while [ "$s" -ne "0" ]
@@ -26,38 +27,45 @@ g+)
     done
     echo
     echo "connecting 3G ..."
-    dbus-send --system --type=method_call --dest=com.nokia.icd /com/nokia/icd \
-                              com.nokia.icd.connect \
-                              string:${G} \
-                              uint32:0
+    dbus-send --system --type=method_call --dest=com.nokia.icd \
+        /com/nokia/icd \
+        com.nokia.icd.connect \
+        string:${G} \
+        uint32:0
     ;;
 g-)
     # disconnect 3G
     echo "disconnecting 3G ..."
-    dbus-send --system --dest=com.nokia.icd /com/nokia/icd_ui com.nokia.icd_ui.disconnect \
-                              boolean:true
+    dbus-send --system --dest=com.nokia.icd \
+        /com/nokia/icd_ui \
+        com.nokia.icd_ui.disconnect \
+        boolean:true
     sleep 1
     echo "disabling radio..."
-    dbus-send --system --type=method_call --dest=com.nokia.phone.SSC /com/nokia/phone/SSC \
-                              com.nokia.phone.SSC.set_radio \
-                              boolean:false
+    dbus-send --system --type=method_call --dest=com.nokia.phone.SSC \
+        /com/nokia/phone/SSC \
+        com.nokia.phone.SSC.set_radio \
+        boolean:false
     ;;
 w+)
     # connect wifi
-    dbus-send --system --type=method_call --dest=com.nokia.icd /com/nokia/icd \
-                              com.nokia.icd.connect \
-                              string:${W} \
-                              uint32:0
+    dbus-send --system --type=method_call --dest=com.nokia.icd \
+        /com/nokia/icd \
+        com.nokia.icd.connect \
+        string:${W} \
+        uint32:0
     ;;
 w-)
     # disconnect wifi
-    dbus-send --system --dest=com.nokia.icd /com/nokia/icd_ui \
-                              com.nokia.icd_ui.disconnect \
-                              boolean:true
+    dbus-send --system --dest=com.nokia.icd \
+        /com/nokia/icd_ui \
+        com.nokia.icd_ui.disconnect \
+        boolean:true
     ;;
 n)
     # network status - active interfaces
-    ifconfig | (egrep '^wlan|^gprs|^usb' || echo 'none') | cut -d' ' -f1 | xargs
+    ifconfig | (egrep '^wlan|^gprs|^usb' || echo 'none') | \
+        cut -d' ' -f1 | xargs
     ;;
 b)
     # battery status
@@ -83,26 +91,31 @@ b)
     
 l)
     # lock
-    # this one is code-lock:
-    dbus-send --system --type=method_call --dest=com.nokia.mce /com/nokia/mce/request \
-                              com.nokia.mce.request.devlock_callback\
-                              int32:0
-#    dbus-send --system --type=method_call --dest=com.nokia.system_ui /com/nokia/system_ui/request \
-#                             com.nokia.system_ui.request.devlock_open \
-#                              string:'com.nokia.mce' \
-#                              string:'/com/nokia/mce/request' \
-#                              string:'com.nokia.mce.request' \
-#                              string:'devlock_callback' \
-#                              uint32:'3'
+    # this one is code-lock
+    dbus-send --system --type=method_call --dest=com.nokia.system_ui \
+        /com/nokia/system_ui/request \
+        com.nokia.system_ui.request.devlock_open \
+        string:'com.nokia.mce' \
+        string:'/com/nokia/mce/request' \
+        string:'com.nokia.mce.request' \
+        string:'devlock_callback' \
+        uint32:'3'
+    # this one also locks power button:
+    dbus-send --system --type=method_call --dest=com.nokia.mce \
+        /com/nokia/mce/request \
+        com.nokia.mce.request.devlock_callback\
+        int32:0
     # this one blanks the screen afterwards
-#    dbus-send --system --type=method_call --dest=com.nokia.mce /com/nokia/mce/request \
-#                              com.nokia.mce.request.req_tklock_mode_change \
-#                              string:"locked"
+    dbus-send --system --type=method_call --dest=com.nokia.mce \
+        /com/nokia/mce/request \
+        com.nokia.mce.request.req_tklock_mode_change \
+        string:"locked"
     ;;
 q)
     # shutdown
-    dbus-send --system --type=method_call --dest=com.nokia.dsme --print-reply /com/nokia/dsme/request \
-                              com.nokia.dsme.request.req_shutdown
+    dbus-send --system --type=method_call --dest=com.nokia.dsme \
+        /com/nokia/dsme/request \
+        com.nokia.dsme.request.req_shutdown
     ;;
 *)
     # usage
