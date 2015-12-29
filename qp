@@ -70,8 +70,6 @@ b)
     
 l)
     # lock
-    # this one is simple lock, just blanking the screen:
-    # dbus-send --system --type=method_call --dest=com.nokia.mce /com/nokia/mce/request com.nokia.mce.request.req_tklock_mode_change string:"locked"
     # this one is code-lock:
     dbus-send --print-reply --system --type=method_call --dest=com.nokia.system_ui /com/nokia/system_ui/request com.nokia.system_ui.request.devlock_open \
                                             string:'com.nokia.mce' \
@@ -79,6 +77,8 @@ l)
                                             string:'com.nokia.mce.request' \
                                             string:'devlock_callback' \
                                             uint32:'3'
+    # this one blanks the screen afterwards
+    dbus-send --system --type=method_call --dest=com.nokia.mce /com/nokia/mce/request com.nokia.mce.request.req_tklock_mode_change string:"locked"
     ;;
 q)
     # shutdown
