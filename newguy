@@ -5,6 +5,11 @@
 T=60 # default timeout, adjustable via options later
 TS=$(date +%Y%m%d-%H%M%S) # timestamp
 
+# gear
+TCPDUMP="/usr/sbin/tcpdump"
+TSHARK="/usr/bin/tshark"
+CAPINFOS="/usr/bin/capinfos"
+# FIXME: check if we are good to go
 
 usage() {
     echo
@@ -37,13 +42,13 @@ shift $((OPTIND-1))
 
 # check if our argument is an interface or a file
 if ip link show dev $1 > /dev/null 2>&1; then
-    echo "-- capturing for ${T} seconds on $1 ..."
+    echo "--- capturing for ${T} seconds on $1 ..."
     FN="${TS}-${1}-${T}s.cap"
-    timeout ${T} tcpdump -i $1 -w ${FN} -s0
+    timeout ${T} ${TCPDUMP} -i $1 -w ${FN} -s0
     # older versions of timeout don't support
     # '--preserve-status', so, using dirty hack
     [ $? -eq 124 ] || exit
-    echo "----------"
+    echo
 else
     FN=$1
     [ -e $FN ] || {
@@ -51,11 +56,19 @@ else
       exit
     }
 fi
-
-capinfos -csuaeix ${FN} || exit
-echo "----------"
+echo "--- capture file:"
+${CAPINFOS} -csuaeEix ${FN} || exit
+echo
 
 #we have a valid pcap file we can work with
 # should we?
 [[ $SAVEONLY ]] && exit
 
+echo "--- protocol hierarchy:"
+${TSHARK} -r ${FN} -q -zio,phs 2>/dev/null | egrep -v '^$|^==|^Filter:|Protocol'
+echo
+
+# CDP or LLDP
+echo "--- CDP or LLDP:"
+${TCPDUMP} -r ${FN} -v -c 1 '(ether[12:2]=0x88cc or ether[20:2]=0x2000)' 2>/dev/null
+echo
