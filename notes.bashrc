@@ -10,6 +10,15 @@ fi
 NOTES=${HOME}/notes
 export NOTES
 mkdir -p ${NOTES}
+# git setup
+if [ ! -d ${NOTES}/.git ]; then
+    ( cd ${NOTES}
+    git init
+    git config user.name user
+    git config user.email user@localhost
+    git add --all
+    git commit -m "initial commit" )
+fi
 
 notes(){
     if [ -n "$*" ]; then
@@ -17,6 +26,14 @@ notes(){
     else
         vim ${NOTES}
     fi
+    notes-commit "$*"
+}
+
+notes-commit(){
+    # commit any changes to git
+    ( cd ${NOTES}
+    git add --all
+    git commit -m "edit: $*" )
 }
 
 notes-find(){
@@ -32,7 +49,26 @@ notes-find(){
 }
 
 notes-daily(){
-    vim ${NOTES}/$(date +%F).txt
+    if [ -n "$*" ]; then
+        notes "$(date +%F) $*"
+    else
+        notes "$(date +%F)"
+    fi
+}
+
+notes-rm(){
+    if [ -n "$*" ]; then
+        rm ${NOTES}/"$*".txt
+        notes-commit "rm: $*"
+    else
+        echo "please provide note"
+    fi
+}
+
+notes-ls(){
+    # TODO: tune/colorize
+    find ${NOTES}/*.txt -maxdepth 1 -printf '%CF %CH:%CM\t%f\n' | \
+        sed 's/\.txt$//'
 }
 
 # autocompletion stuff
@@ -48,3 +84,4 @@ _notes(){
     return 0
 }
 complete -o nospace -F _notes notes
+complete -o nospace -F _notes notes-rm
