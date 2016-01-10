@@ -71,6 +71,19 @@ notes-ls(){
         sed 's/\.txt$//'
 }
 
+notes-cp(){
+    # copy notes file to clipboard
+    if [ -n "$*" ]; then
+        if CPY=$(command -v xclip); then
+            ${CPY} -selection clipboard -i ${NOTES}/"$*".txt
+        else
+            echo 'xclip is not installed'
+        fi
+    else
+        echo "please provide note"
+    fi
+}
+
 # autocompletion stuff
 _notes(){
     local cur names IFS
@@ -85,3 +98,4 @@ _notes(){
 }
 complete -o nospace -F _notes notes
 complete -o nospace -F _notes notes-rm
+complete -o nospace -F _notes notes-cp
