@@ -1,0 +1,79 @@
+#!/bin/sh
+
+# this is barebone telnetd service script
+# for use with usbnet autoconfiguration
+# TODO: bind to usb0 ip
+
+# busybox instance
+BB="busybox"
+#BB="busybox.power"
+
+stuff(){
+    # are we good to go
+    if [ -z "$(command -v ${BB})" ]; then
+        echo "${BB} not installed"
+        exit
+    else
+        # does it provide required functions?
+        for ff in telnetd pgrep pkill
+        do
+            ${BB} --list | grep ${ff} > /dev/null  || {
+                echo "-err: ${BB} does not support ${ff}, consider installing busybox-power"
+                exit
+            }
+        done
+    fi
+}
+
+checkroot(){
+    # binding to ptiveleged ports requires root privileges
+    # so does killing root processess
+    if [ $(id -u) -ne 0 ]; then
+        echo "you are not root"
+        exit
+    fi
+}
+
+isenabled(){
+    if [ -z "$(${BB} pgrep -f "${BB} telnetd")" ]; then
+        return 1
+    else
+        return 0
+    fi
+}
+
+stuff
+
+case $1 in
+    start)
+        checkroot
+        if isenabled; then
+            echo "already running"
+            exit
+        else
+            # FIXME bind to ip
+            ${BB} telnetd
+        fi
+        ;;
+    stop)
+        checkroot
+        if isenabled; then
+            ${BB} pkill -f "${BB} telnetd"
+        else
+            echo "not running"
+        fi
+        ;;
+    status)
+        if isenabled; then
+            echo enabled
+        else
+            echo disabled
+        fi
+        ;;
+    *)
+        # usage
+        echo "usage: $0 <start|stop|status>"
+        ;;
+esac
+
+
