@@ -8,6 +8,9 @@
 BB="busybox"
 #BB="busybox.power"
 
+#interface to bind
+IF="usb0"
+
 stuff(){
     # are we good to go
     if [ -z "$(command -v ${BB})" ]; then
@@ -42,6 +45,10 @@ isenabled(){
     fi
 }
 
+getip(){
+  /sbin/ifconfig ${IF} | grep "inet addr:" | cut -d: -f2 | cut -d' ' -f1
+}
+
 stuff
 
 case $1 in
@@ -49,10 +56,15 @@ case $1 in
         checkroot
         if isenabled; then
             echo "already running"
-            exit
         else
-            # FIXME bind to ip
-            ${BB} telnetd
+            IP=$(getip)
+            if [ -z "${IP}" ]; then
+                #${BB} telnetd # bind to any avail. if
+                echo "no IP address to bind"
+            else
+                ${BB} telnetd -b ${IP}
+            fi
+
         fi
         ;;
     stop)
