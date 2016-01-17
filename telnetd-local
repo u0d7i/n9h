@@ -2,11 +2,11 @@
 
 # this is barebone telnetd service script
 # for use with usbnet autoconfiguration
-# TODO: bind to usb0 ip
 
 # busybox instance
-BB="busybox"
+#BB="busybox"
 #BB="busybox.power"
+BB="/bin/busybox.power"
 
 #interface to bind
 IF="usb0"
@@ -87,5 +87,3 @@ case $1 in
         echo "usage: $0 <start|stop|status>"
         ;;
 esac
-
-
