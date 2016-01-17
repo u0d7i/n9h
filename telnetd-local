@@ -29,7 +29,7 @@ stuff(){
 }
 
 checkroot(){
-    # binding to ptiveleged ports requires root privileges
+    # binding to privileged ports requires root
     # so does killing root processess
     if [ $(id -u) -ne 0 ]; then
         echo "you are not root"

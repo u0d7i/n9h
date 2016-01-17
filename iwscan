@@ -31,3 +31,4 @@ iwlist ${IF} scan | \
         done | sort | sed -e 'N;N;N;s/\n/;/g' -e 's/[BE]SSID://g'
     done | \
     awk -F\; '{printf "%s %-5s %-7s %s\n", $1,$2,$4,$3}'
+
