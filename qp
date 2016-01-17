@@ -2,11 +2,24 @@
 # qp - n900 helper script
 
 # default mobile data id
-G="T-Mobile"
+#G="T-Mobile"
 # default wifi id
-W="00000000-dead-beaf-1337-00000"
+#W="00000000-dead-beaf-1337-00000"
 # check with
 # gconftool -R /system/osso/connectivity/IAP
+#
+# dump/load approach:
+# gconftool --dump /system/osso/connectivity/IAP/T-Mobile > conn-mobiledata.gconf
+# gconftool --dump /system/osso/connectivity/IAP/00000000-dead-beaf-1337-00000 > conn-wifi.gconf
+# Etit ID's to short unified names,
+# cat conn-mobiledata.gconf conn-wifi.gconf > connectivity.gconf
+# gconftool --load connectivity.gconf
+# use cross-device compatible neural id's
+G="MobileData"
+W="DefaultWifi"
+# then remove leftouts
+# gconftool -R /system/osso/connectivity/IAP | grep "^ /" | egrep -v "MobileData|DefaultWifi" | sed 's/:$//' | while read line; do gconftool --dump ${line} | gconftool --unload -; done
+# reuse resulting connectivity.gconf on other devices
 
 case $1 in
 g+)
