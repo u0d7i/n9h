@@ -12,14 +12,14 @@
 # gconftool --dump /system/osso/connectivity/IAP/T-Mobile > conn-mobiledata.gconf
 # gconftool --dump /system/osso/connectivity/IAP/00000000-dead-beaf-1337-00000 > conn-wifi.gconf
 # Etit ID's to short unified names,
-# cat conn-mobiledata.gconf conn-wifi.gconf > connectivity.gconf
-# gconftool --load connectivity.gconf
+# gconftool --load conn-mobiledata.gconf
+# gconftool --load conn-wifi.gconf
 # use cross-device compatible neural id's
 G="MobileData"
 W="DefaultWifi"
 # then remove leftouts
 # gconftool -R /system/osso/connectivity/IAP | grep "^ /" | egrep -v "MobileData|DefaultWifi" | sed 's/:$//' | while read line; do gconftool --dump ${line} | gconftool --unload -; done
-# reuse resulting connectivity.gconf on other devices
+# reuse resulting connectivity gconf fils on other devices
 
 case $1 in
 g+)
