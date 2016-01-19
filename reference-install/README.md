@@ -18,5 +18,7 @@ MD5:
 
 ### eMMC
 
+    $ sed -e "s/.size = 2048/size = 24576/" RX-51_2009SE_10.2010.13-2.VANILLA_PR_EMMC_MR0_ARM.bin  > patched-RX-51_2009SE_10.2010.13-2.VANILLA_PR_EMMC_MR0_ARM.bin
+
 ![eMMC bindiff](bindiff.png "eMMC bindiff")
 
