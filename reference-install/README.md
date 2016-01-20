@@ -1,5 +1,13 @@
 # Nokia n900 reference install
 
+# Table of Contents
+
+* [Prerequisites](#prerequisites)
+  * [Firmware modifications](#firmware-modifications)
+    * [eMMC](#emmc)
+    * [rootfs](#rootfs)
+
+
 ## Prerequisites
 
 * flashers:
