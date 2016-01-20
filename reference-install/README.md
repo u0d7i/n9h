@@ -1,6 +1,6 @@
 # Nokia n900 reference install
 
-# Table of Contents
+## Table of Contents
 
 * [Prerequisites](#prerequisites)
   * [Firmware modifications](#firmware-modifications)
