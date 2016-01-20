@@ -18,7 +18,16 @@ MD5:
 
 ### eMMC
 
+Edit VANILLA image starting at 0xcb. Make sure it says:
+
+    partition {size = 2048; fs_type = "ext3"; prefix = "home";}
+
+Stealing whitespace like described [here](http://wiki.maemo.org/User:Joerg_rw/tools#increase_size_of_.2Fhome_-_if_you_like_that) overcomes '9999' limit described [here](http://wiki.maemo.org/Repartitioning_the_flash#Solution_.235:_Edit_eMMC_image_.28works_on_PR1.2.2C_by_globalbus.29). You can do it in Hex etitor (like hte), or simply with sed:
+
     $ sed -e "s/.size = 2048/size = 24576/" RX-51_2009SE_10.2010.13-2.VANILLA_PR_EMMC_MR0_ARM.bin  > patched-RX-51_2009SE_10.2010.13-2.VANILLA_PR_EMMC_MR0_ARM.bin
+
+Resulting in:
 
 ![eMMC bindiff](bindiff.png "eMMC bindiff")
 
+Modification increases /home patrition from 2G to 24G, leaving 5.1G to VFAT MyDocs.
