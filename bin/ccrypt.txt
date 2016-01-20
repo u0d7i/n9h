@@ -1,0 +1,4 @@
+binary is from ccrypt_1.9-4_armel.deb for debian wheezy:
+https://packages.debian.org/wheezy/armel/ccrypt/download
+extracted with:
+$ dpkg -x ccrypt_1.9-4_armel.deb  .
