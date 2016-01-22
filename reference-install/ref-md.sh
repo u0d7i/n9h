@@ -2,7 +2,7 @@
 # reference install script to run on a mobile device
 
 usage(){
-    echo "usage: $0 <action>"
+    echo "usage: $(basename $0) <action>"
     echo "actions:"
     echo "  all - do everything (normal use)"
     echo "  apt - set apt sources file"
@@ -25,8 +25,8 @@ EOF
 
 
 # fascis checks
-    grep "RX-51" /proc/cpuinfo > /dev/null && \
-    grep "Maemo" /etc/issue > /dev/null | {
+grep "RX-51" /proc/cpuinfo > /dev/null && \
+grep "Maemo" /etc/issue > /dev/null || {
     echo "-err: run it on a mobile device"
     exit
 }
