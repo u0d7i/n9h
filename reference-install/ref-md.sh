@@ -25,8 +25,9 @@ EOF
 
 
 # fascis checks
-    grep "RX-51" /proc/cpuinfo > /dev/null || {
-    echo "-err: run it on mobile device"
+    grep "RX-51" /proc/cpuinfo > /dev/null && \
+    grep "Maemo" /etc/issue > /dev/null | {
+    echo "-err: run it on a mobile device"
     exit
 }
 if [ $(id -u) -ne 0 ]; then
