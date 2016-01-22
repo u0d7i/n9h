@@ -1,16 +1,22 @@
 #!/bin/sh
 # reference install script to run on a mobile device
 
+# settings
+conn_cfg="connectivity.gconf.cpt"
+
 usage(){
     echo "usage: $(basename $0) <action>"
     echo "actions:"
-    echo "  all - do everything (normal use)"
-    echo "  apt - set apt sources file"
+    echo "  all  - do everything (normal use)"
+    echo "  apt  - set apt sources file"
+    echo "  conn - set up connectivity"
+    echo "  cssu - install CSSU"
     echo
     exit
 }
 
 aptfile(){
+    echo "+ok: updating apt sources"
     SRC="/etc/apt/sources.list.d/hildon-application-manager.list"
     cat > $SRC << 'EOF'
 deb http://repository.maemo.org/community/ fremantle free non-free
@@ -23,8 +29,33 @@ deb http://repository.maemo.org/ fremantle/tools free non-free
 EOF
 }
 
+conn(){
+    echo "+ok: setting connectivity"
+    if [ -f $conn_cfg ]; then
+        if [ -z "$(command -v ccrypt)" ]; then
+            echo "-err: ccrypt not installed"
+        else
+            echo "+ok: importing connectivity cfg"
+            ccrypt -c $conn_cfg | gconftool --load -
+        fi
+    else
+        echo "!warn: no connectivity cfg, do it manually"
+    fi
+    # add status check and cli enable later
+    # start gui for now
+    dbus-send --system --type=method_call \
+        --dest=com.nokia.icd_ui /com/nokia/icd_ui \
+        com.nokia.icd_ui.show_conn_dlg boolean:false
+}
 
-# fascis checks
+cssu(){
+    echo "+ok: install cssu"
+    apt-get update
+    apt-get install mp-fremantle-community-pr
+}
+
+
+# fascist checks
 grep "RX-51" /proc/cpuinfo > /dev/null && \
 grep "Maemo" /etc/issue > /dev/null || {
     echo "-err: run it on a mobile device"
@@ -42,6 +73,12 @@ case $1 in
         ;;
     apt)
         aptfile
+        ;;
+    conn)
+        conn
+        ;;
+    cssu)
+        cssu
         ;;
     *)
         usage
