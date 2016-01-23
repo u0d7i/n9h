@@ -2,6 +2,7 @@
 # reference install script to run on a mobile device
 
 # settings
+apt_src="/etc/apt/sources.list.d/hildon-application-manager.list"
 conn_cfg="connectivity.gconf.cpt"
 
 usage(){
@@ -17,8 +18,7 @@ usage(){
 
 aptfile(){
     echo "+ok: updating apt sources"
-    SRC="/etc/apt/sources.list.d/hildon-application-manager.list"
-    cat > $SRC << 'EOF'
+    cat > $apt_src << 'EOF'
 deb http://repository.maemo.org/community/ fremantle free non-free
 deb http://repository.maemo.org/extras/ fremantle-1.3 free non-free
 deb http://repository.maemo.org/extras-devel fremantle free non-free
@@ -48,10 +48,30 @@ conn(){
         com.nokia.icd_ui.show_conn_dlg boolean:false
 }
 
+apttest(){
+    # check for internet connection
+    # there are several ways to do it
+    # but the only reliable one - try using actual resource you need
+    url=$(head -1 $apt_src | cut -d' ' -f2)
+    if ! echo $url | grep 'repository.maemo.org' > /dev/null 2>&1; then
+        echo "-err: unexpected apt source"
+        return 1
+    fi
+    if wget -q -O - $url >/dev/null 2>&1; then
+        echo "+ok: apt source is reachable"
+        return 0
+    else
+       echo "-err: apt source is not reachable"
+       return 1
+    fi
+}
+
 cssu(){
-    echo "+ok: install cssu"
-    apt-get update
-    apt-get install mp-fremantle-community-pr
+    if apttest; then
+        echo "+ok: install cssu"
+        apt-get update
+        apt-get install mp-fremantle-community-pr
+    fi
 }
 
 
