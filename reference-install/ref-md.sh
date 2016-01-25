@@ -42,7 +42,7 @@ conn(){
         echo "!warn: no connectivity cfg, do it manually"
     fi
     # add status check and cli enable later
-    # start gui for now
+    # start gui and use dirty loos for now
     dbus-send --system --type=method_call \
         --dest=com.nokia.icd_ui /com/nokia/icd_ui \
         com.nokia.icd_ui.show_conn_dlg boolean:false
@@ -72,6 +72,9 @@ cssu(){
         apt-get update
         apt-get install mp-fremantle-community-pr
         apt-get clean
+        return 0
+    else
+        return 1
     fi
 }
 
@@ -91,6 +94,12 @@ fi
 case $1 in
     all)
         echo "not implemented yet"
+        aptfile
+        conn
+        while ! cssu
+        do
+            sleep 1
+        done
         ;;
     apt)
         aptfile
