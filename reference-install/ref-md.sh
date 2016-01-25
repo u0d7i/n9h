@@ -71,6 +71,7 @@ cssu(){
         echo "+ok: install cssu"
         apt-get update
         apt-get install mp-fremantle-community-pr
+        apt-get clean
     fi
 }
 
