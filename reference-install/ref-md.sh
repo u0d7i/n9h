@@ -4,15 +4,18 @@
 # settings
 apt_src="/etc/apt/sources.list.d/hildon-application-manager.list"
 conn_cfg="connectivity.gconf.cpt"
+AP="DefaultWifi"
 
 usage(){
     echo "usage: $(basename $0) <action>"
     echo "actions:"
-    echo "  all  - do everything (normal use)"
-    echo "  apt  - set apt sources file"
-    echo "  conn - set up connectivity"
-    echo "  cssu - install CSSU"
-    echo "  purge - remove crap"
+    echo "  all     - do everything (normal use)"
+    echo "  apt     - set apt sources file"
+    echo "  conn    - set up connectivity"
+    echo "  cssu    - install CSSU"
+    echo "  purge   - remove crap"
+    echo "  install - install stuff"
+    echo "  tune    - final touch"
     echo
     exit
 }
@@ -40,13 +43,16 @@ conn(){
             ccrypt -c $conn_cfg | gconftool --load -
         fi
     else
-        echo "!warn: no connectivity cfg, do it manually"
+        echo "!warn: no connectivity cfg, skipping import"
     fi
-    # add status check and cli enable later
-    # start gui and use dirty loos for now
-    #dbus-send --system --type=method_call \
-    #    --dest=com.nokia.icd_ui /com/nokia/icd_ui \
-    #    com.nokia.icd_ui.show_conn_dlg boolean:false
+    # try connecting to default AP
+    echo "+ok: connecting to default AP..."
+    dbus-send --system --type=method_call --print-reply\
+        --dest=com.nokia.icd /com/nokia/icd \
+        com.nokia.icd.connect \
+        string:${AP} uint32:0 > /dev/null 2>&1 && \
+            echo "+ok: connected" || \
+            echo "-err: can't conect, do it manually"
 }
 
 apttest(){
@@ -68,10 +74,19 @@ apttest(){
     fi
 }
 
+aptupd(){
+    if apttest; then
+        echo "+ok: updating apt..."
+        apt-get update
+        return 0
+    else
+        return 1
+    fi
+}
+
 cssu(){
     if apttest; then
-        echo "+ok: install cssu"
-        apt-get update
+        echo "+ok: installing cssu..."
         apt-get install mp-fremantle-community-pr
         apt-get clean
         return 0
@@ -81,6 +96,7 @@ cssu(){
 }
 
 purge(){
+    echo "+ok: purging crap..."
     apt-get -y remove --purge cherry ap-installer amazon-installer \
         foreca-installer facebook-installer dtg-installer \
         tutorial-home-applet osso-tutorial-l10n-engb \
@@ -102,6 +118,27 @@ purge(){
         hildon-welcome hildon-welcome-default-logo
 }
 
+install(){
+    if apttest; then
+        echo "+ok: installing stuff..."
+        apt-get -y install bash4 cell-modem-ui coreutils-gnu \
+            cpumem-applet findutils-gnu i2c-tools iptables \
+            kernel-power-bootimg kernel-power-flasher \
+            kernel-power-settings kexec-tools less locate \
+            man-db-n900 mtd-utils openssh procps rootsh ssh-status \
+            u-boot-flasher usbip vim
+        apt-get clean
+        return 0
+    else
+        return 1
+    fi
+
+}
+
+tune(){
+    echo "+ok: final touch..."
+}
+
 # fascist checks
 grep "RX-51" /proc/cpuinfo > /dev/null && \
 grep "Maemo" /etc/issue > /dev/null || {
@@ -116,17 +153,18 @@ fi
 # do stuff
 case $1 in
     all)
-        echo "not implemented yet"
         aptfile
         conn
         while ! apttest q
         do
             echo -n .
             sleep 1
-        done
-        echo
+        done && echo
+        aptupd
         cssu
         purge
+        install
+        tune
         ;;
     apt)
         aptfile
@@ -135,10 +173,18 @@ case $1 in
         conn
         ;;
     cssu)
+        aptupd
         cssu
         ;;
     purge)
         purge
+        ;;
+    install)
+        aptupd
+        install
+        ;;
+    tune)
+        tune
         ;;
     *)
         usage
