@@ -137,6 +137,42 @@ install(){
 
 tune(){
     echo "+ok: final touch..."
+
+    ## dbus
+    # silent profile
+    dbus-send --type=method_call --dest=com.nokia.profiled /com/nokia/profiled com.nokia.profiled.set_profile string:"silent"
+
+    ## gconf
+    # update check interval to 5 years
+    gconftool -s /apps/hildon/update-notifier/check_interval -t int 2628000
+    # kbd fix
+    gconftool -s /apps/osso/inputmethod/ext_kb_repeat_enabled --type boolean true
+    # display dim to 2 minutes
+    gconftool -s /system/osso/dsm/display -t int 120
+    # leave only one desktop
+    gconftool -s /apps/osso/hildon-desktop/views/active -t list --list-type int [1]
+    # xterm  reverse colours
+    gconftool -s /apps/osso/xterm/reverse -t boolean true
+    # disable positioning
+    gconftool -s /system/nokia/location/gps-disabled -t boolean true
+    gconftool -s /system/nokia/location/network-disabled -t boolean true
+    # disable auto-connect (always ask)
+    gconftool -s /system/osso/connectivity/network_type/auto_connect -t list --list-type string "[]"
+
+    ## misc
+    # tracker
+    sed -i -e "s/Throttle=0/Throttle=10/" /home/user/.config/tracker/tracker.cfg
+    # remove startup wizard after battery swap
+    if [ -e /etc/X11/Xsession.d/30osso_startup_wizard ]; then
+        mv /etc/X11/Xsession.d/30osso_startup_wizard /root/
+    fi
+    # setup bash
+    if [ -x /bin/bash4 ]; then
+        ln -sf /bin/bash4 /bin/bash
+        # danger
+        sed -i 's@/root:/bin/sh@/root:/bin/bash@' /etc/passwd
+    fi
+
 }
 
 # fascist checks
