@@ -11,6 +11,9 @@ usage(){
     echo "usage: $0 <action>"
     echo "actions:"
     echo "  all - do everything (normal use)"
+    echo "  md5 - check md5"
+    echo "  patch - patch VANILLA"
+    echo "  xtract - extract rootfs image"
     echo "  mount - mount rootfs"
     echo "  cleanup - subj"
     echo
@@ -62,6 +65,7 @@ xtract_rootfs(){
 }
 
 mount_rootfs(){
+  echo "+ok: mounting rootfs..."
   modprobe nandsim first_id_byte=0x20 second_id_byte=0xaa third_id_byte=0x00 fourth_id_byte=0x15 parts=1,3,2,16,16,2010
   modprobe ubi
   modprobe ubifs
@@ -85,9 +89,19 @@ case $1 in
     all)
         if md5s; then
           patch_vanilla || exit
-          xtract_rootfs || exita
+          xtract_rootfs || exit
+          mount_rootfs
           cleanup
         fi
+        ;;
+    md5)
+        md5s
+        ;;
+    patch)
+        patch_vanilla
+        ;;
+    xtract)
+        xtract_rootfs
         ;;
     mount)
         mount_rootfs
