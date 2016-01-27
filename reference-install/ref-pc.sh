@@ -5,11 +5,13 @@ VANILLA="RX-51_2009SE_10.2010.13-2.VANILLA_PR_EMMC_MR0_ARM.bin"
 COMBINED="RX-51_2009SE_21.2011.38-1_PR_COMBINED_MR0_ARM.bin"
 FLASHER="./flasher-3.5"
 ROOTFS="rootfs_RX-51_2009SE_21.2011.38-1_PR_MR0"
+MNTPNT="/mnt/n900"
 
 usage(){
     echo "usage: $0 <action>"
     echo "actions:"
     echo "  all - do everything (normal use)"
+    echo "  mount - mount rootfs"
     echo "  cleanup - subj"
     echo
     exit
@@ -59,9 +61,19 @@ xtract_rootfs(){
   fi
 }
 
+mount_rootfs(){
+  modprobe nandsim first_id_byte=0x20 second_id_byte=0xaa third_id_byte=0x00 fourth_id_byte=0x15 parts=1,3,2,16,16,2010
+  modprobe ubi
+  modprobe ubifs
+  ubiformat /dev/mtd5 -s 512 -O 512 -f ${ROOTFS}
+  ubiattach /dev/ubi_ctrl -p /dev/mtd5
+  mkdir -p ${MNTPNT}
+  mount ubi:rootfs ${MNTPNT} -t ubifs
+}
+
 cleanup(){
   echo "+ok: cleanup..."
-  umount /mnt/n900
+  umount ${MNTPNT}
   ubidetach /dev/ubi_ctrl -d 0
   rmmod ubifs
   rmmod ubi
@@ -76,6 +88,9 @@ case $1 in
           xtract_rootfs || exita
           cleanup
         fi
+        ;;
+    mount)
+        mount_rootfs
         ;;
     cleanup)
         cleanup
