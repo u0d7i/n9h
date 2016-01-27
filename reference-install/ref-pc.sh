@@ -3,11 +3,14 @@
 
 VANILLA="RX-51_2009SE_10.2010.13-2.VANILLA_PR_EMMC_MR0_ARM.bin"
 COMBINED="RX-51_2009SE_21.2011.38-1_PR_COMBINED_MR0_ARM.bin"
+FLASHER="./flasher-3.5"
+ROOTFS="rootfs_RX-51_2009SE_21.2011.38-1_PR_MR0"
 
 usage(){
     echo "usage: $0 <action>"
     echo "actions:"
     echo "  all - do everything (normal use)"
+    echo "  cleanup - subj"
     echo
     exit
 }
@@ -39,13 +42,45 @@ patch_vanilla(){
   fi
 }
 
+xtract_rootfs(){
+  if [ -x ${FLASHER} ]; then
+    echo "+ok: extracting rootfs..."
+    mkdir -p dump
+    ${FLASHER} -F ${COMBINED} --unpack=dump/ 2>&1 | grep rootfs | grep ^Image
+    mv dump/rootfs.jffs2 ${ROOTFS}
+    rm -rf dump
+    if [ -e ${ROOTFS} ]; then
+      echo "+ok: we have rootfs image"
+      return 0
+    else
+      echo "-err: extracting rootfs failed"
+      return 1
+    fi
+  fi
+}
+
+cleanup(){
+  echo "+ok: cleanup..."
+  umount /mnt/n900
+  ubidetach /dev/ubi_ctrl -d 0
+  rmmod ubifs
+  rmmod ubi
+  rmmod nandsim
+}
+
 # do stuff
 case $1 in
     all)
         if md5s; then
-          patch_vanilla
+          patch_vanilla || exit
+          xtract_rootfs || exita
+          cleanup
         fi
         ;;
+    cleanup)
+        cleanup
+        ;;
+
     *)
         usage
         ;;
