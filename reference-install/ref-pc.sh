@@ -15,6 +15,7 @@ usage(){
     echo "  patch - patch VANILLA"
     echo "  xtract - extract rootfs image"
     echo "  mount - mount rootfs"
+    echo "  image - create new rootfs image"
     echo "  cleanup - subj"
     echo
     exit
@@ -75,6 +76,35 @@ mount_rootfs(){
   mount ubi:rootfs ${MNTPNT} -t ubifs
 }
 
+make_rootfs(){
+  if mountpoint -q ${MNTPNT}; then
+    echo "+ok: creating new rootfs image..."
+    mkfs.ubifs -m 2048 -e 129024 -c 2047 -r ${MNTPNT} rootfs_ubifs.jffs2 || echo "-err: mkfs.ubifs"
+    cat << EOF > rootfs_cfg.ini
+[rootfs]
+mode=ubi
+image=rootfs_ubifs.jffs2
+vol_id=0
+vol_size=187729920
+vol_type=dynamic
+vol_name=rootfs
+vol_flags=autoresize
+vol_alignment=1
+EOF
+    ubinize -o mod-${ROOTFS} -p 128KiB -m 2048 -s 512 rootfs_cfg.ini || echo "-err: ubinize"
+    rm rootfs_ubifs.jffs2 rootfs_cfg.ini
+    if [ -e mod-${ROOTFS} ]; then
+      echo "+ok: we have new rootfs image"
+      return 0
+    else
+      return 1
+    fi
+  else
+    echo "-err: rootfs not mounted, can't image"
+    return 1
+  fi
+}
+
 cleanup(){
   echo "+ok: cleanup..."
   umount ${MNTPNT}
@@ -91,6 +121,7 @@ case $1 in
           patch_vanilla || exit
           xtract_rootfs || exit
           mount_rootfs
+          make_rootfs
           cleanup
         fi
         ;;
@@ -105,6 +136,9 @@ case $1 in
         ;;
     mount)
         mount_rootfs
+        ;;
+    image)
+        make_rootfs
         ;;
     cleanup)
         cleanup
