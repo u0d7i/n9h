@@ -26,7 +26,8 @@ Running Nokia flasher-3.5 `i386` binary on `x86_64`  Debian:
     # apt-get install libc6-i386
     
     # ./flasher-3.5-i386
-    ./flasher-3.5-i386: error while loading shared libraries: libusb-0.1.so.4: cannot open shared object file: No such file or directory
+    ./flasher-3.5-i386: error while loading shared libraries: libusb-0.1.so.4:
+                    cannot open shared object file: No such file or directory
     
     # ldd flasher-3.5-i386
             linux-gate.so.1 (0xf7702000)
