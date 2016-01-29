@@ -1,0 +1,10 @@
+#!/bin/sh
+#From Andrey Gubarev's easyroot.
+trap exit SIGHUP SIGINT SIGTERM
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+if [ x$1 = x--use-su ]; then
+  exec su -
+else
+  echo 'Root shell enabled'
+  HISTFILE=/root/.ash_history /bin/sh
+fi

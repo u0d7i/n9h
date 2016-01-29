@@ -1,0 +1,25 @@
+#! /bin/sh
+# apt-get wrapper for maemo@n900
+# courtesy of Joerg Reisenweber
+# http://wiki.maemo.org/User:Joerg_rw/tools#Miniwrapper_for_apt-get_logs.
+
+## file /usr/local/bin/apt-get
+## due to $PATH will override original apt-get cmd and create
+## a file installed-aps.sh in ~root/ which can be sourced to redo
+## all the apps installed via `apt-get install <app>`
+
+ag=/usr/bin/apt-get
+case "$1" in
+ "install")
+    echo '############ logged install ###########'
+    $ag "$@" && echo "$ag $@ ;#`date`" >>$HOME/installed-aps.sh
+    ;;
+ "dist-upgrade"|"autoremove")
+    # autoremove kills rtcom-accounts-voip-support
+    # see http://talk.maemo.org/showthread.php?t=70875
+    echo "NONONO!! Don't do that!"
+    exit 5
+    ;;
+ *)
+    $ag "$@"
+esac

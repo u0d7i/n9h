@@ -6,6 +6,7 @@ COMBINED="RX-51_2009SE_21.2011.38-1_PR_COMBINED_MR0_ARM.bin"
 FLASHER="./flasher-3.5"
 ROOTFS="rootfs_RX-51_2009SE_21.2011.38-1_PR_MR0"
 MNTPNT="/mnt/n900"
+FILES="$(dirname $0)/files"
 
 usage(){
     echo "usage: $0 <action>"
@@ -15,6 +16,7 @@ usage(){
     echo "  patch - patch VANILLA"
     echo "  xtract - extract rootfs image"
     echo "  mount - mount rootfs"
+    echo "  modify - modify rootfs"
     echo "  image - create new rootfs image"
     echo "  cleanup - subj"
     echo
@@ -76,6 +78,49 @@ mount_rootfs(){
   mount ubi:rootfs ${MNTPNT} -t ubifs
 }
 
+mod_rootfs(){
+  if mountpoint -q ${MNTPNT}; then
+    echo "+ok: modifying rootfs..."
+    # gainroot
+    if [ -e ${FILES}/gainroot ]; then
+       echo "+ok: gainroot"
+      cat ${FILES}/gainroot >  ${MNTPNT}/usr/sbin/gainroot
+    else
+      echo "-err: gainroot not found"
+    fi
+    # scripts
+    if [ -e ${FILES}/ref-md.sh ]; then
+      echo "+ok: ref-md.sh"
+      cp ${FILES}/ref-md.sh ${MNTPNT}/root/
+    else
+      echo "-err: ref-md.sh not found"
+    fi
+    # binaries
+    for bin in ccrypt qp apt-get
+    do
+      if [ -e ${FILES}/${bin} ]; then
+        cp ${FILES}/${bin} ${MNTPNT}/usr/local/bin/ && echo "+ok: copy ${bin}"
+      else
+        echo "-err: ${bin} not found"
+      fi
+    done
+    # keyboard
+    if [ -e ${FILES}/rx-51.mod ]; then
+      echo "+ok: remapping keyboard"
+      cat ${FILES}/rx-51.mod > ${MNTPNT}/usr/share/X11/xkb/symbols/nokia_vndr/rx-51
+    else
+       echo "-err: rx-51.mod not found"
+    fi
+    # docpurge
+    echo "+ok: docpurge"
+    cp  ${MNTPNT}/usr/sbin/docpurge ${MNTPNT}/usr/sbin/docpurge-disabled
+    echo '#!/bin/sh' >  ${MNTPNT}/usr/sbin/docpurge
+    #FIXME/TODO: fix /etc/gconf/ for /apps/osso/hildon-desktop/applets
+  else
+    echo "-err: rootfs not mounted, can't modify."
+  fi    
+}
+
 make_rootfs(){
   if mountpoint -q ${MNTPNT}; then
     echo "+ok: creating new rootfs image..."
@@ -129,6 +174,7 @@ case $1 in
           patch_vanilla || exit
           xtract_rootfs || exit
           mount_rootfs
+          mod_rootfs
           make_rootfs
           cleanup
         fi
@@ -144,6 +190,9 @@ case $1 in
         ;;
     mount)
         mount_rootfs
+        ;;
+    modify)
+        mod_rootfs
         ;;
     image)
         make_rootfs
