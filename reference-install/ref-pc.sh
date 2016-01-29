@@ -114,6 +114,14 @@ cleanup(){
   rmmod nandsim
 }
 
+
+# checks
+if [ $(id -u) -ne 0 ]; then
+  echo "-err: you are not root"
+  exit
+fi
+
+
 # do stuff
 case $1 in
     all)
