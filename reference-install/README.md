@@ -17,6 +17,7 @@
 * [0xFFFF] (https://talk.maemo.org/showthread.php?t=87996)
 
 Running Nokia flasher-3.5 `i386` binary on `x86_64`  Debian:
+
     # uname -a
     Linux base 3.16.0-4-amd64 #1 SMP Debian 3.16.7-ckt20-1+deb8u3 (2016-01-17) x86_64 GNU/Linux
     
