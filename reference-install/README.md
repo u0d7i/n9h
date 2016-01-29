@@ -3,19 +3,44 @@
 ## Contents
 
 * [Prerequisites](#prerequisites)
-  * [Firmware modifications](#firmware-modifications)
+    * [Flashers](#flashers)
+    * [Firmware images](#firmware-images)
+* [Firmware modifications](#firmware-modifications)
     * [eMMC](#emmc)
     * [rootfs](#rootfs)
 
 
 ## Prerequisites
 
-* flashers:
-  * Nokia official [flasher-3.5] (https://wiki.maemo.org/Documentation/Maemo_5_Developer_Guide/Development_Environment/Maemo_Flasher-3.5)
-  * [0xFFFF] (https://talk.maemo.org/showthread.php?t=87996)
-* firmware images:
-  * eMMC aka VANILLA (latest: `RX-51_2009SE_10.2010.13-2.VANILLA_PR_EMMC_MR0_ARM.bin`)
-  * FIASCO aka COMBINED aka rootfs (latest: `RX-51_2009SE_21.2011.38-1_PR_COMBINED_MR0_ARM.bin` )
+### Flashers
+* Nokia official [flasher-3.5] (https://wiki.maemo.org/Documentation/Maemo_5_Developer_Guide/Development_Environment/Maemo_Flasher-3.5)
+* [0xFFFF] (https://talk.maemo.org/showthread.php?t=87996)
+
+Running Nokia flasher-3.5 `i386` binary on `x86_64`  Debian:
+    # uname -a
+    Linux base 3.16.0-4-amd64 #1 SMP Debian 3.16.7-ckt20-1+deb8u3 (2016-01-17) x86_64 GNU/Linux
+    
+    # ./flasher-3.5-i386
+    -bash: ./flasher-3.5-i386: No such file or directory
+    
+    # apt-get install libc6-i386
+    
+    # ./flasher-3.5-i386
+    ./flasher-3.5-i386: error while loading shared libraries: libusb-0.1.so.4: cannot open shared object file: No such file or directory
+    
+    # ldd flasher-3.5-i386
+            linux-gate.so.1 (0xf7702000)
+            libusb-0.1.so.4 => not found
+            libc.so.6 => /lib32/libc.so.6 (0xf7548000)
+            /lib/ld-linux.so.2 (0xf7705000)
+    
+    # dpkg --add-architecture i386
+    # apt-get update
+    # apt-get install libusb-0.1-4:i386
+
+### Firmware images
+* eMMC aka VANILLA (latest: `RX-51_2009SE_10.2010.13-2.VANILLA_PR_EMMC_MR0_ARM.bin`)
+* FIASCO aka COMBINED aka rootfs (latest: `RX-51_2009SE_21.2011.38-1_PR_COMBINED_MR0_ARM.bin` )
 
 MD5:
 
