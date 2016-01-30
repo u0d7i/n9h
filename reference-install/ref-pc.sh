@@ -88,13 +88,16 @@ mod_rootfs(){
     else
       echo "-err: gainroot not found"
     fi
-    # scripts
-    if [ -e ${FILES}/ref-md.sh ]; then
-      echo "+ok: ref-md.sh"
-      cp ${FILES}/ref-md.sh ${MNTPNT}/root/
-    else
-      echo "-err: ref-md.sh not found"
-    fi
+    # scripts / root
+    for root in ref-md.sh connectivity.gconf.cpt
+    do
+      if [ -e ${FILES}/${root} ]; then
+        echo "+ok: ${root}"
+        cp ${FILES}/${root} ${MNTPNT}/root/
+      else
+        echo "-err: ${root} not found"
+      fi
+    done
     # binaries
     for bin in ccrypt qp apt-get
     do
