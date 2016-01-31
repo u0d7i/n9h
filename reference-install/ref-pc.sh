@@ -18,7 +18,8 @@ usage(){
     echo "  mount - mount rootfs"
     echo "  modify - modify rootfs"
     echo "  image - create new rootfs image"
-    echo "  cleanup - subj"
+    echo "  cleanup - unmount/clean"
+    echo "  flash - flash modified firmware"
     echo
     exit
 }
@@ -162,6 +163,16 @@ cleanup(){
   rmmod nandsim
 }
 
+flash(){
+    for stuff in ${COMBINED} mod-${ROOTFS} mod-${VANILLA} ${FLASHER};
+    do
+        if [ ! -e $stuff ]; then
+            echo "-err: $stuff not found"
+            return 1
+        fi
+    done
+}
+
 
 # checks
 if [ $(id -u) -ne 0 ]; then
@@ -203,7 +214,9 @@ case $1 in
     cleanup)
         cleanup
         ;;
-
+    flash)
+        flash
+        ;;
     *)
         usage
         ;;
