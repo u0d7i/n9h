@@ -120,6 +120,9 @@ mod_rootfs(){
     echo "+ok: docpurge"
     cp  ${MNTPNT}/usr/sbin/docpurge ${MNTPNT}/usr/sbin/docpurge-disabled
     echo '#!/bin/sh' >  ${MNTPNT}/usr/sbin/docpurge
+    # cherry
+    echo "+ok: kill cherry"
+    echo '#!/bin/sh' >  ${MNTPNT}/usr/bin/cherry
     #FIXME/TODO: fix /etc/gconf/ for /apps/osso/hildon-desktop/applets
   else
     echo "-err: rootfs not mounted, can't modify."
