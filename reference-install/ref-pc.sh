@@ -70,7 +70,10 @@ xtract_rootfs(){
 
 mount_rootfs(){
   echo "+ok: mounting rootfs..."
-  # FIXME: test for ubi* tools
+  if [ -z $(command -v ubiformat) ]; then
+    echo "-err: ubi* tools not found. Install mtd-utils"
+    return 1
+  fi
   modprobe nandsim first_id_byte=0x20 second_id_byte=0xaa third_id_byte=0x00 fourth_id_byte=0x15 parts=1,3,2,16,16,2010
   modprobe ubi
   modprobe ubifs
