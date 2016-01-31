@@ -121,9 +121,9 @@ purge(){
 install(){
     if apttest; then
         echo "+ok: installing stuff..."
-        apt-get -y install bash4 cell-modem-ui coreutils-gnu \
-            cpumem-applet findutils-gnu i2c-tools iptables \
-            kernel-power-bootimg kernel-power-flasher \
+        apt-get -y install bash4 busybox-power cell-modem-ui \
+            coreutils-gnu cpumem-applet findutils-gnu i2c-tools \
+            iptables kernel-power-bootimg kernel-power-flasher \
             kernel-power-settings kexec-tools less locate \
             man-db-n900 mtd-utils openssh procps rootsh ssh-status \
             u-boot-flasher usbip vim
