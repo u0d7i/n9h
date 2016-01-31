@@ -1,0 +1,5 @@
+binary from:
+https://github.com/pepaslabs/pogoplug_static_binaries/blob/master/bin/wget?raw=true
+as described in:
+https://github.com/pepaslabs/pogoplug_static_binaries
+then stripped

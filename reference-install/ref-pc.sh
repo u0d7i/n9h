@@ -107,7 +107,7 @@ mod_rootfs(){
       fi
     done
     # binaries
-    for bin in ccrypt qp apt-get
+    for bin in ccrypt qp apt-get wget.static
     do
       if [ -e ${FILES}/${bin} ]; then
         cp ${FILES}/${bin} ${MNTPNT}/usr/local/bin/ && echo "+ok: copy ${bin}"

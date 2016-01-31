@@ -61,13 +61,16 @@ apttest(){
     # there are several ways to do it
     # but the only reliable one - try using actual resource you need
     #
-    # FIXME: does not work on clean install
+    WGET="wget"
+    if  [ -z "$(command -v ${WGET})" ]; then
+      WGET="wget.static"
+    fi
     url=$(head -1 $apt_src | cut -d' ' -f2)
     if ! echo $url | grep 'repository.maemo.org' > /dev/null 2>&1; then
         echo "-err: unexpected apt source"
         return 1
     fi
-    if wget -q -O - $url >/dev/null 2>&1; then
+    if ${WGET} -q -O - $url >/dev/null 2>&1; then
         [ "$1" == "q" ] || echo "+ok: apt source is reachable"
         return 0
     else
