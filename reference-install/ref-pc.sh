@@ -65,6 +65,9 @@ xtract_rootfs(){
       echo "-err: extracting rootfs failed"
       return 1
     fi
+  else
+    echo "-err: flasher not found"
+    return 1
   fi
 }
 
