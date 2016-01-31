@@ -190,9 +190,13 @@ flash(){
     echo "Insert battery."
     echo "Which should result in this script continuing."
     echo "##############################################"
+    sleep 5
+    echo "+ok: flashing COMBINED..."
     ${FLASHER} -f -F ${COMBINED} && \
+    echo "+ok: flashing modified ROOTFS..." && \
     ${FLASHER} -f -r mod-${ROOTFS} && \
-    ${FLASHER} -f -F $VANILLA
+    echo "+ok: flashing modified VANILLA..." && \
+    ${FLASHER} -f -F mod-${VANILLA} && \
     echo "##############################################"
     echo "Remove battery, unplug USB."
     echo "Then reinsert battery"
