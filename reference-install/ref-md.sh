@@ -60,6 +60,7 @@ apttest(){
     # there are several ways to do it
     # but the only reliable one - try using actual resource you need
     #
+    # FIXME: does not work on clean install
     url=$(head -1 $apt_src | cut -d' ' -f2)
     if ! echo $url | grep 'repository.maemo.org' > /dev/null 2>&1; then
         echo "-err: unexpected apt source"
@@ -87,7 +88,7 @@ aptupd(){
 cssu(){
     if apttest; then
         echo "+ok: installing cssu..."
-        apt-get install mp-fremantle-community-pr
+        apt-get -y install mp-fremantle-community-pr
         apt-get clean
         return 0
     else
