@@ -70,6 +70,7 @@ xtract_rootfs(){
 
 mount_rootfs(){
   echo "+ok: mounting rootfs..."
+  # FIXME: test for ubi* tools
   modprobe nandsim first_id_byte=0x20 second_id_byte=0xaa third_id_byte=0x00 fourth_id_byte=0x15 parts=1,3,2,16,16,2010
   modprobe ubi
   modprobe ubifs
@@ -171,8 +172,22 @@ flash(){
             return 1
         fi
     done
+    echo "+ok: flashing..."
+    echo "##############################################"
+    echo "Remove battery from N900"
+    echo "Plug N900  to a primary (non-hub) USB."
+    echo "Insert battery."
+    echo "Which should result in this script continuing."
+    echo "##############################################"
+    ${FLASHER} -f -F ${COMBINED} && \
+    ${FLASHER} -f -r mod-${ROOTFS} && \
+    ${FLASHER} -f -F $VANILLA
+    echo "##############################################"
+    echo "Remove battery, unplug USB."
+    echo "Then reinsert battery"
+    echo "and let device boot and init system."
+    echo "##############################################"
 }
-
 
 # checks
 if [ $(id -u) -ne 0 ]; then
@@ -191,6 +206,7 @@ case $1 in
           mod_rootfs
           make_rootfs
           cleanup
+          flash
         fi
         ;;
     md5)
