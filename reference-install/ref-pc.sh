@@ -163,8 +163,10 @@ EOF
 
 cleanup(){
   echo "+ok: cleanup..."
-  umount ${MNTPNT}
-  ubidetach /dev/ubi_ctrl -d 0
+  if mountpoint -q ${MNTPNT}; then
+    umount ${MNTPNT}
+    ubidetach /dev/ubi_ctrl -d 0
+  fi
   rmmod ubifs
   rmmod ubi
   rmmod nandsim
