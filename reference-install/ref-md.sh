@@ -12,6 +12,7 @@ usage(){
     echo "  all     - do everything (normal use)"
     echo "  apt     - set apt sources file"
     echo "  conn    - set up connectivity"
+    echo "  apttest -  test apt sources (implies conn)"
     echo "  cssu    - install CSSU"
     echo "  purge   - remove crap"
     echo "  install - install stuff"
@@ -76,6 +77,7 @@ apttest(){
 }
 
 aptupd(){
+    # DIXME pgp keys
     if apttest; then
         echo "+ok: updating apt..."
         apt-get update
@@ -122,7 +124,7 @@ purge(){
 install(){
     if apttest; then
         echo "+ok: installing stuff..."
-        apt-get -y install bash4 busybox-power cell-modem-ui \
+        apt-get -y --force-yes install bash4 busybox-power cell-modem-ui \
             coreutils-gnu cpumem-applet findutils-gnu i2c-tools \
             iptables kernel-power-bootimg kernel-power-flasher \
             kernel-power-settings kexec-tools less locate \
@@ -208,6 +210,9 @@ case $1 in
         ;;
     conn)
         conn
+        ;;
+    apttest)
+        apttest
         ;;
     cssu)
         aptupd
