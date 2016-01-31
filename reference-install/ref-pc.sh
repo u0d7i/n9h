@@ -144,7 +144,7 @@ make_rootfs(){
 mode=ubi
 image=rootfs_ubifs.jffs2
 vol_id=0
-vol_size=187729920
+vol_size=188246016
 vol_type=dynamic
 vol_name=rootfs
 vol_flags=autoresize
