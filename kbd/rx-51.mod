@@ -397,22 +397,22 @@ xkb_symbols "english_base" {
     key <AC02>	{ [	s,		S,		plus,		plus		] };
     key <AC03>	{ [	d,		D,		numbersign,	numbersign	] };
     key <AC04>	{ [	f,		F,		minus,		minus		] };
-    key <AC05>	{ [	g,		G,		underscore,	underscore	] };
-    key <AC06>	{ [	h,		H,		parenleft,	parenleft	] };
-    key <AC07>	{ [	j,		J,		parenright,	parenright	] };
-    key <AC08>	{ [	k,		K,		ampersand,	ampersand	] };
+    key <AC05>	{ [	g,		G,		underscore,	bracketleft	] };
+    key <AC06>	{ [	h,		H,		parenleft,	braceleft	] };
+    key <AC07>	{ [	j,		J,		parenright,	braceright	] };
+    key <AC08>	{ [	k,		K,		ampersand,	bracketright	] };
     key <AC09>	{ [	l,		L,		exclam,		exclam		] };
-    key <AB09>	{ [	period,		colon,		question,	question	] };
+    key <AB09>	{ [	period,		colon,		period, 	question	] };
 
     // 3. row
-    key <AB01>	{ [	z,		Z,		sterling,	sterling	] };
+    key <AB01>	{ [	z,		Z,		percent,	sterling	] };
     key <AB02>	{ [	x,		X,		dollar,		dollar		] };
-    key <AB03>	{ [	c,		C,		bar,		bar		] };
+    key <AB03>	{ [	c,		C,		bar,		EuroSign	] };
     key <AB04>	{ [	v,		V,		slash,		slash		] };
     key <AB05>	{ [	b,		B,		backslash,	backslash	] };
     key <AB06>	{ [	n,		N,		quotedbl,	quotedbl	] };
     key <AB07>	{ [	m,		M,		apostrophe,	apostrophe	] };
-    key <SPCE>	{ [	space,		space,		at,		at		] };
+    key <SPCE>	{ [	space,		space,		space,		at		] };
 };
 
 partial hidden alphanumeric_keys
