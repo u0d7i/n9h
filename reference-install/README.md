@@ -69,7 +69,7 @@ Modification increases /home patrition from 2G to 24G, leaving 5.1G to VFAT MyDo
 
 ### rootfs
 
-rootfs is included in COMBINED/FIASCO image, and first must be extracted.
+Rootfs is included in COMBINED/FIASCO image, and first must be extracted.
 
 with flasher-3.5:
 
@@ -86,3 +86,36 @@ or with 0xFFFF:
     <...>
 
 we are going to follow latter naming convention.
+
+Rootfs image is an [UBI](http://www.linux-mtd.infradead.org/doc/ubi.html) image. Creating modified rootfs image involves several steps.
+
+Install mtd-utils if not installed:
+
+    $ sudo apt-get install mtd-utils
+
+Follow instructions [courtesy of Pali](https://talk.maemo.org/showpost.php?p=1325044&postcount=13):
+
+1. Load nandsim module (which emulate nand mtd device) with same layout as has N900:
+
+    $ modprobe nandsim first_id_byte=0x20 second_id_byte=0xaa third_id_byte=0x00 fourth_id_byte=0x15 parts=1,3,2,16,16,2010
+
+2. Load ubi and ubifs modules:
+
+    $ modprobe ubi
+    $ modprobe ubifs
+
+3. Flash rootfs ubi image to emulated nand mtd device:
+
+    $ ubiformat /dev/mtd5 -s 512 -O 512 -f <rootfs_image>
+
+4. Attach mtd device to ubi:
+
+   $ ubiattach /dev/ubi_ctrl -p /dev/mtd5
+
+5. Mount rootfs volume (ubifs image) from ubi to /mnt/n900:
+
+    $ mkdir -p /mnt/n900
+    $ mount ubi:rootfs /mnt/n900 -t ubifs
+
+And then rootfs image should be mounted to /mnt/n900
+
