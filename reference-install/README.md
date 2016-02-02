@@ -130,7 +130,7 @@ Creating modified rootfs image from mounted directory:
     mode=ubi
     image=rootfs_ubifs.jffs2
     vol_id=0
-    vol_size=180MiB
+    vol_size=200MiB
     vol_type=dynamic
     vol_name=rootfs
     vol_flags=autoresize
