@@ -120,3 +120,22 @@ Follow instructions [courtesy of Pali](https://talk.maemo.org/showpost.php?p=132
 
 And then rootfs image should be mounted to /mnt/n900
 
+Creating modified rootfs image from mounted directory:
+
+    $ mkfs.ubifs -m 2048 -e 129024 -c 2047 -r /mnt/n900 rootfs_ubifs.jffs2
+
+    $ cat << EOF > rootfs_cfg.ini
+    [rootfs]
+    mode=ubi
+    image=rootfs_ubifs.jffs2
+    vol_id=0
+    vol_size=180MiB
+    vol_type=dynamic
+    vol_name=rootfs
+    vol_flags=autoresize
+    vol_alignment=1
+    EOF
+    
+    $ ubinize -o mod-<rootfs_image> -p 128KiB -m 2048 -s 512 rootfs_cfg.ini
+
+    $ rm rootfs_ubifs.jffs2 rootfs_cfg.ini
