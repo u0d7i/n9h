@@ -140,3 +140,12 @@ Creating modified rootfs image from mounted directory:
     $ ubinize -o mod-<rootfs_image> -p 128KiB -m 2048 -s 512 rootfs_cfg.ini
 
     $ rm rootfs_ubifs.jffs2 rootfs_cfg.ini
+
+Cleaning up:
+
+    $ umount /mnt/n900
+    $ ubidetach /dev/ubi_ctrl -d 0
+    $ rmmod ubifs
+    $ rmmod ubi
+    $ rmmod nandsim
+
