@@ -110,7 +110,7 @@ mod_rootfs(){
     echo "+ok: replace busybox..."
     # DANGER! replacing core system component
     if [ -e ${FILES}/busybox ]; then
-      #make sure we know exactly what we aew doing
+      # make sure we know exactly what we are doing
       echo -n "MD5: "
       if echo "f018846a83de458e40d875af819c4e8a ${FILES}/busybox" | md5sum -c - ; then
         cat ${FILES}/busybox > ${MNTPNT}/bin/busybox
