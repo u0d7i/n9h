@@ -107,7 +107,18 @@ mod_rootfs(){
       fi
     done
     # binaries
-    for bin in ccrypt qp apt-get wget.static
+    echo "+ok: replace busybox..."
+    # DANGER! replacing core system component
+    if [ -e ${FILES}/busybox ]; then
+      #make sure we know exactly what we aew doing
+      echo -n "MD5: "
+      if echo "f018846a83de458e40d875af819c4e8a ${FILES}/busybox" | md5sum -c - ; then
+        cat ${FILES}/busybox > ${MNTPNT}/bin/busybox
+      else
+        echo "-err: can't replace busybox"
+      fi
+    fi
+    for bin in ccrypt qp apt-get
     do
       if [ -e ${FILES}/${bin} ]; then
         cp ${FILES}/${bin} ${MNTPNT}/usr/local/bin/ && echo "+ok: copy ${bin}"

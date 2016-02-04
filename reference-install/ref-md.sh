@@ -63,7 +63,7 @@ apttest(){
     #
     WGET="wget"
     if  [ -z "$(command -v ${WGET})" ]; then
-      WGET="wget.static"
+      WGET="busybox wget"
     fi
     url=$(head -1 $apt_src | cut -d' ' -f2)
     if ! echo $url | grep 'repository.maemo.org' > /dev/null 2>&1; then
