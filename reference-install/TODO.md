@@ -1,4 +1,4 @@
-# Current plans
+# Curent plans
 
 F stands for feature, B stands for bug
 
