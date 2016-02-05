@@ -1,0 +1,4 @@
+adb for arm,
+compiled natively on n900 debian chroot
+after modified makefile
+from https://github.com/bonnyfone/adb-arm
