@@ -1,0 +1,24 @@
+--- pcsuite-enable.sh.dist    2000-01-01 15:50:20.000000000 +0200
++++ pcsuite-enable.sh 2000-01-01 15:54:25.000000000 +0200
+@@ -71,4 +71,8 @@
+ kill -USR1 $SYNCD_PID
+ logger "$0: sent SIGUSR1 to syncd"
+ 
++# mod:
++# enable usbnet and start sshd
++/sbin/ifup usb0
++/etc/init.d/ssh start
+ exit 0
+
+
+--- pcsuite-disable.sh.dist   2000-01-01 15:56:23.000000000 +0200
++++ pcsuite-disable.sh        2000-01-01 16:00:06.000000000 +0200
+@@ -21,4 +21,8 @@
+ 
+ logger "$0: do nothing to pass USB certs"
+ 
++# mod
++# stop sshd and disable usbnet on disconnect
++/etc/init.d/ssh stop
++/sbin/ifdown usb0
+ exit 0
