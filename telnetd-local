@@ -2,11 +2,14 @@
 
 # this is barebone telnetd service script
 # for use with usbnet autoconfiguration
+# before (if any) sshd is installed
 
 # busybox instance
-#BB="busybox"
+BB="busybox"
 #BB="busybox.power"
-BB="/bin/busybox.power"
+#BB="/bin/busybox.power"
+# default busybox instance on n900 does not provide telnetd
+# replace it with busybox-power via rootfs mod
 
 #interface to bind
 IF="usb0"
