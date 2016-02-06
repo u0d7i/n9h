@@ -141,6 +141,8 @@ mod_rootfs(){
     echo "+ok: kill cherry"
     echo '#!/bin/sh' >  ${MNTPNT}/usr/bin/cherry
     #FIXME/TODO: fix /etc/gconf/ for /apps/osso/hildon-desktop/applets
+    echo "+ok: patching pcsuite mode..."
+    patch -N -d  ${MNTPNT}/usr/sbin -r - <${FILES}/pcsuite.patch
   else
     echo "-err: rootfs not mounted, can't modify."
   fi    
