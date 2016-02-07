@@ -41,11 +41,11 @@ EOF
     chmod 000 $apt_src_block
     # remap cache
     if stat /var/cache/apt | grep /opt/var/cache > /dev/null; then
+      echo "!warn: apt cache already remapped. skipping..."
+    else
       mkdir -p /opt/var/cache
       mv /var/cache/apt /opt/var/cache/
       ln -sf /opt/var/cache/apt /var/cache/apt
-    else
-      echo "!warn: apt cache already remapped. skipping..."
     fi
 
 }
