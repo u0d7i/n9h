@@ -2,7 +2,8 @@
 # reference install script to run on a mobile device
 
 # settings
-apt_src="/etc/apt/sources.list.d/hildon-application-manager.list"
+apt_src="/etc/apt/sources.list.d/reference-install.list"
+apt_src_block="/etc/apt/sources.list.d/hildon-application-manager.list"
 conn_cfg="connectivity.gconf.cpt"
 AP="DefaultWifi"
 
@@ -32,6 +33,12 @@ deb http://repository.maemo.org/ fremantle/4bc37c7c77ebe90177c050b805a8dc79 noki
 deb http://repository.maemo.org/ fremantle/sdk free non-free
 deb http://repository.maemo.org/ fremantle/tools free non-free
 EOF
+    # kill hildon-application-manager sources now
+    # prevent from restoring it
+    # dirty hack
+    # not gonna use it EVER. track trace and fixme if opposite
+    cat /dev/null > $apt_src_block
+    chmod 000 $apt_src_block
 }
 
 conn(){
