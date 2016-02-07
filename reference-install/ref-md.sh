@@ -87,8 +87,9 @@ apttest(){
 }
 
 aptupd(){
-    # DIXME pgp keys
     if apttest; then
+        echo "+ok: updating keys..."
+        apt-key adv --recv-keys --keyserver keys.gnupg.net 5D0E7C4F2E6D6F9A
         echo "+ok: updating apt..."
         apt-get update
         return 0
@@ -100,7 +101,7 @@ aptupd(){
 cssu(){
     if apttest; then
         echo "+ok: installing cssu..."
-        apt-get -y install mp-fremantle-community-pr
+        apt-get -y --force-yes install mp-fremantle-community-pr
         apt-get clean
         return 0
     else
