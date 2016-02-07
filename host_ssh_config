@@ -1,0 +1,5 @@
+host n900
+ hostname 192.168.2.15
+ user root
+ StrictHostKeyChecking no
+ UserKnownHostsFile=/dev/null
