@@ -23,7 +23,7 @@ usage(){
 }
 
 aptfile(){
-    echo "+ok: updating apt sources"
+    echo "+ok: setting apt..."
     cat > $apt_src << 'EOF'
 deb http://repository.maemo.org/community/ fremantle free non-free
 deb http://repository.maemo.org/extras/ fremantle-1.3 free non-free
@@ -39,6 +39,11 @@ EOF
     # not gonna use it EVER. track trace and fixme if opposite
     cat /dev/null > $apt_src_block
     chmod 000 $apt_src_block
+    # remap cache
+    mkdir -p /opt/var/cache
+    mv /var/cache/apt /opt/var/cache/
+    ln -sf /opt/var/cache/apt /var/cache/apt
+
 }
 
 conn(){
@@ -136,10 +141,10 @@ install(){
     if apttest; then
         echo "+ok: installing stuff..."
         apt-get -y --force-yes install bash4 busybox-power cell-modem-ui \
-            coreutils-gnu cpumem-applet findutils-gnu i2c-tools \
-            iptables kernel-power-bootimg kernel-power-flasher \
-            kernel-power-settings kexec-tools less locate \
-            man-db-n900 mtd-utils openssh procps rootsh ssh-status \
+            cpumem-applet i2c-tools \
+            kernel-power-bootimg kernel-power-flasher \
+            kernel-power-settings kexec-tools less \
+            mtd-utils openssh  rootsh ssh-status \
             u-boot-flasher usbip vim
         apt-get clean
         return 0
