@@ -140,15 +140,9 @@ mod_rootfs(){
     # cherry
     echo "+ok: kill cherry"
     echo '#!/bin/sh' >  ${MNTPNT}/usr/bin/cherry
-    #FIXME/TODO: fix /etc/gconf/ for /apps/osso/hildon-desktop/applets
     echo "+ok: patching pcsuite mode..."
     patch -N -d  ${MNTPNT}/usr/sbin -r - <${FILES}/pcsuite.patch
-    # EXPERIMENTAL: fix /etc/gconf/ for /apps/osso/hildon-desktop/applets
-    cat /dev/null > ${MNTPNT}/etc/hildon-desktop/home.safe-set
-    cat /dev/null > ${MNTPNT}/etc/hildon-desktop/home.plugins
-    rm -rf ${MNTPNT}/etc/gconf/gconf.xml.defaults/apps/osso/hildon-home/bookmarks
-    rm -rf ${MNTPNT}/etc/gconf/gconf.xml.defaults/schemas/apps/osso/hildon-home/%gconf.xml
-    rm -rf ${MNTPNT}/etc/gconf/gconf.xml.defaults/schemas/apps/osso/hildon-desktop/applets
+    # TODO: fix gconf for /apps/osso/hildon-desktop/applets
   else
     echo "-err: rootfs not mounted, can't modify."
   fi    
