@@ -140,6 +140,10 @@ mod_rootfs(){
     # cherry
     echo "+ok: kill cherry"
     echo '#!/bin/sh' >  ${MNTPNT}/usr/bin/cherry
+    # apt sources: should we do it here,
+    # or leave the option for hildon-application-manager ?
+    #ln -sf /dev/null ${MNTPNT}/etc/apt/sources.list.d/hildon-application-manager.list
+    # patches
     echo "+ok: patching pcsuite mode..."
     patch -N -d  ${MNTPNT}/usr/sbin -r - <${FILES}/pcsuite.patch
     # TODO: fix gconf for /apps/osso/hildon-desktop/applets

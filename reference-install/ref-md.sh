@@ -37,8 +37,7 @@ EOF
     # prevent from restoring it
     # dirty hack
     # not gonna use it EVER. track trace and fixme if opposite
-    cat /dev/null > $apt_src_block
-    chmod 000 $apt_src_block
+    ln -sf /dev/null $apt_src_block
     # remap cache
     if stat /var/cache/apt | grep /opt/var/cache > /dev/null; then
       echo "!warn: apt cache already remapped. skipping..."
