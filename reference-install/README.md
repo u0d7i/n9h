@@ -1,4 +1,4 @@
-# Nokia n900 reference install
+# Nokia N900 reference install
 
 ## Contents
 
