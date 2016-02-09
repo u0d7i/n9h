@@ -147,7 +147,7 @@ install(){
             cpumem-applet i2c-tools \
             kernel-power-bootimg kernel-power-flasher \
             kernel-power-settings kexec-tools less \
-            mtd-utils openssh  rootsh ssh-status \
+            mtd-utils openssh  rootsh \
             u-boot-flasher usbip vim
         apt-get clean
         return 0
@@ -194,6 +194,8 @@ tune(){
         # danger
         sed -i 's@/root:/bin/sh@/root:/bin/bash@' /etc/passwd
     fi
+    # we don't want sshd start on boot
+    update-rc.d -f ssh remove
 
 }
 
