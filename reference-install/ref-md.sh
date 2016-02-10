@@ -144,11 +144,8 @@ install(){
     if apttest; then
         echo "+ok: installing stuff..."
         apt-get -y --force-yes install bash4 busybox-power cell-modem-ui \
-            cpumem-applet i2c-tools \
-            kernel-power-bootimg kernel-power-flasher \
-            kernel-power-settings kexec-tools less \
-            mtd-utils openssh  rootsh \
-            u-boot-flasher usbip vim
+            cpumem-applet i2c-tools kernel-power-flasher kernel-power-settings \
+            openssh  rootsh usbip vim
         apt-get clean
         return 0
     else
