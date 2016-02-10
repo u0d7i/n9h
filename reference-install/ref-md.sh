@@ -193,6 +193,7 @@ tune(){
     fi
     # we don't want sshd start on boot
     update-rc.d -f ssh remove
+    /etc/init.d/ssh stop
 
 }
 
