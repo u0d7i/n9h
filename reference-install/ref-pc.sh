@@ -96,14 +96,16 @@ mod_rootfs(){
     else
       echo "-err: gainroot not found"
     fi
-    # scripts / root
-    for root in ref-md.sh connectivity.gconf.cpt
+    # root
+    echo "+ok: copying files..."
+    mkdir -p ${MNTPNT}/root/ref
+    for ff in ref-md.sh connectivity.gconf.cpt pcsuite.patch
     do
-      if [ -e ${FILES}/${root} ]; then
-        echo "+ok: ${root}"
-        cp ${FILES}/${root} ${MNTPNT}/root/
+      if [ -e ${FILES}/${ff} ]; then
+        echo "+ok: ${ff}"
+        cp ${FILES}/${ff} ${MNTPNT}/root/ref/
       else
-        echo "-err: ${root} not found"
+        echo "-err: ${ff} not found"
       fi
     done
     # binaries
@@ -144,8 +146,9 @@ mod_rootfs(){
     # or leave the option for hildon-application-manager ?
     #ln -sf /dev/null ${MNTPNT}/etc/apt/sources.list.d/hildon-application-manager.list
     # patches
-    echo "+ok: patching pcsuite mode..."
-    patch -N -d  ${MNTPNT}/usr/sbin -r - <${FILES}/pcsuite.patch
+    #echo "+ok: patching pcsuite mode..."
+    # does not work - cssu overwrites changes - move to ref-md.sh
+    #patch -N -d  ${MNTPNT}/usr/sbin -r - <${FILES}/pcsuite.patch
     # TODO: fix gconf for /apps/osso/hildon-desktop/applets
   else
     echo "-err: rootfs not mounted, can't modify."

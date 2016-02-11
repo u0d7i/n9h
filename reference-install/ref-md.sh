@@ -199,6 +199,13 @@ tune(){
     # we don't want sshd start on boot
     update-rc.d -f ssh remove
     /etc/init.d/ssh stop
+    # this thing just don't die
+    killall -9 sshd
+
+    # late patching
+    FF="/root/ref"
+    cd /usr/sbin
+    patch -N < ${FF}/pcsuite.patch
 
 }
 
