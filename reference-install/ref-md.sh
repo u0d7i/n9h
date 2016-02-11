@@ -181,6 +181,11 @@ tune(){
     ## misc
     # tracker
     sed -i -e "s/Throttle=0/Throttle=10/" /home/user/.config/tracker/tracker.cfg
+    # move root home to bigger partition
+    cd /
+    mv /root /home/
+    ln -sf /home/root /root
+    cd
     # remove startup wizard after battery swap
     if [ -e /etc/X11/Xsession.d/30osso_startup_wizard ]; then
         mv /etc/X11/Xsession.d/30osso_startup_wizard /root/
