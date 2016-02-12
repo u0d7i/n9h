@@ -171,6 +171,8 @@ tune(){
     dbus-send --type=method_call --dest=com.nokia.profiled /com/nokia/profiled com.nokia.profiled.set_profile string:"silent"
 
     ## gconf
+    # display dim to 2 minutes (reapply)
+    gconftool -s /system/osso/dsm/display -t int 120
     # update check interval to 5 years
     gconftool -s /apps/hildon/update-notifier/check_interval -t int 2628000
     # kbd fix
