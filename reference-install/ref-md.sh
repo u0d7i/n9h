@@ -202,9 +202,9 @@ tune(){
         sed -i 's@/root:/bin/sh@/root:/bin/bash@' /etc/passwd
     fi
     # we don't want sshd start on boot
+    # but this thing just don't die
     update-rc.d -f ssh remove
-    /etc/init.d/ssh stop
-    # this thing just don't die
+    rm /etc/event.d/sshd
     killall -9 sshd
 
     # late patching
