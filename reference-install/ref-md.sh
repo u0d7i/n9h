@@ -11,6 +11,7 @@ usage(){
     echo "usage: $(basename $0) <action>"
     echo "actions:"
     echo "  all     - do everything (normal use)"
+    echo "  init    - initial cjanges"
     echo "  apt     - set apt sources file"
     echo "  conn    - set up connectivity"
     echo "  apttest -  test apt sources (implies conn)"
@@ -20,6 +21,14 @@ usage(){
     echo "  tune    - final touch"
     echo
     exit
+}
+
+init(){
+    # initial changes
+    # xterm  reverse colours
+    gconftool -s /apps/osso/xterm/reverse -t boolean true
+    # display dim to 2 minutes
+    gconftool -s /system/osso/dsm/display -t int 120
 }
 
 aptfile(){
@@ -166,12 +175,8 @@ tune(){
     gconftool -s /apps/hildon/update-notifier/check_interval -t int 2628000
     # kbd fix
     gconftool -s /apps/osso/inputmethod/ext_kb_repeat_enabled --type boolean true
-    # display dim to 2 minutes
-    gconftool -s /system/osso/dsm/display -t int 120
     # leave only one desktop
     gconftool -s /apps/osso/hildon-desktop/views/active -t list --list-type int [1]
-    # xterm  reverse colours
-    gconftool -s /apps/osso/xterm/reverse -t boolean true
     # disable positioning
     gconftool -s /system/nokia/location/gps-disabled -t boolean true
     gconftool -s /system/nokia/location/network-disabled -t boolean true
@@ -182,10 +187,8 @@ tune(){
     # tracker
     sed -i -e "s/Throttle=0/Throttle=10/" /home/user/.config/tracker/tracker.cfg
     # move root home to bigger partition
-    cd /
     mv /root /home/
     ln -sf /home/root /root
-    cd
     # remove startup wizard after battery swap
     if [ -e /etc/X11/Xsession.d/30osso_startup_wizard ]; then
         mv /etc/X11/Xsession.d/30osso_startup_wizard /root/
@@ -223,6 +226,7 @@ fi
 # do stuff
 case $1 in
     all)
+        init
         aptfile
         conn
         while ! apttest q
@@ -235,6 +239,9 @@ case $1 in
         purge
         install
         tune
+        ;;
+    init)
+        init
         ;;
     apt)
         aptfile
