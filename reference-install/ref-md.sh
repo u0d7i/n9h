@@ -11,7 +11,7 @@ usage(){
     echo "usage: $(basename $0) <action>"
     echo "actions:"
     echo "  all     - do everything (normal use)"
-    echo "  init    - initial cjanges"
+    echo "  init    - initial changes"
     echo "  apt     - set apt sources file"
     echo "  conn    - set up connectivity"
     echo "  apttest -  test apt sources (implies conn)"
