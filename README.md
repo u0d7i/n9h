@@ -4,4 +4,4 @@ There are two Nokia N900 devices: one for normal everyday use as a linux termina
 
 * [Reference install](reference-install/) - initial N900 setup for both cases
 * [Debian chroot](debian-chroot/) - stable use
-* Debian native - experimental use and tests
+* [Debian native](debian-native/) - experimental use and tests
