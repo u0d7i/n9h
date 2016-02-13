@@ -9,7 +9,7 @@
 * microSD card
 
 
-    ~# apt-get install cryptsetup easy-deb-chroot
+`~# apt-get install cryptsetup easy-deb-chroot`
 
 
 ## APT
