@@ -5,6 +5,10 @@
 * [N900 reference install](../reference-install)
 * [kernel-power](https://wiki.maemo.org/Kernel_power)
 * [Easy_Debian](https://wiki.maemo.org/Easy_Debian)
+* cryptsetup
+* microSD card
+
+    # apt-get install cryptsetup easy-deb-chroot
 
 ## APT
 
