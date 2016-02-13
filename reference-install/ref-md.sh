@@ -14,11 +14,12 @@ usage(){
     echo "  init    - initial changes"
     echo "  apt     - set apt sources file"
     echo "  conn    - set up connectivity"
-    echo "  apttest -  test apt sources (implies conn)"
+    echo "  apttest - test apt sources (implies conn)"
     echo "  cssu    - install CSSU"
     echo "  purge   - remove crap"
     echo "  install - install stuff"
     echo "  tune    - final touch"
+    echo "  reboot  - reboot"
     echo
     exit
 }
@@ -212,7 +213,12 @@ tune(){
     FF="/root/ref"
     cd /usr/sbin
     patch -N < ${FF}/pcsuite.patch
+}
 
+reboot_now(){
+    echo -n "Reboot now? [y/N] "
+    read rr
+    [ "$rr" == "y" ] && reboot
 }
 
 # fascist checks
@@ -242,6 +248,7 @@ case $1 in
         purge
         install
         tune
+        reboot_now
         ;;
     init)
         init
@@ -268,6 +275,9 @@ case $1 in
         ;;
     tune)
         tune
+        ;;
+    reboot)
+        reboot_now
         ;;
     *)
         usage
