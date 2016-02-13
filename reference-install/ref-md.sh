@@ -205,6 +205,7 @@ tune(){
     # but this thing just don't die
     update-rc.d -f ssh remove
     rm /etc/event.d/sshd
+    /etc/init.d/ssh stop
     killall -9 sshd
 
     # late patching
