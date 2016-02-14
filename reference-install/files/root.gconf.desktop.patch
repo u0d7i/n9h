@@ -1,5 +1,5 @@
---- /etc/gconf/gconf.xml.defaults/%gconf-tree.xml.dist	2016-02-14 17:12:54.000000000 +0200
-+++ /etc/gconf/gconf.xml.defaults/%gconf-tree.xml	2016-02-14 17:37:28.000000000 +0200
+--- /etc/gconf/gconf.xml.defaults/%gconf-tree.xml.dist	2011-09-21 17:45:08.000000000 +0300
++++ /etc/gconf/gconf.xml.defaults/%gconf-tree.xml	2016-02-14 21:24:18.283709613 +0200
 @@ -315,6 +315,10 @@
  					<entry name="current" mtime="1316616247" schema="/schemas/apps/osso/hildon-desktop/views/current"/>
  				</dir>
@@ -11,7 +11,38 @@
  					<dir name="TaskShortcut:rtcom-call-ui.desktop">
  						<entry name="position" mtime="1316616307" schema="/schemas/apps/osso/hildon-desktop/applets/TaskShortcut:rtcom-call-ui.desktop/position"/>
  						<entry name="view" mtime="1316616307" schema="/schemas/apps/osso/hildon-desktop/applets/TaskShortcut:rtcom-call-ui.desktop/view"/>
-
+@@ -1106,6 +1110,9 @@
+ 								<li type="string">
+ 									<stringvalue>rtcom-call-ui.desktop</stringvalue>
+ 								</li>
++								<li type="string">
++									<stringvalue>root.desktop</stringvalue>
++								</li>
+ 							</default>
+ 						</local_schema>
+ 					</entry>
+@@ -1475,6 +1482,21 @@
+ 								</local_schema>
+ 							</entry>
+ 						</dir>
++                                                <dir name="TaskShortcut:root.desktop">
++                                                        <entry name="position" mtime="1316616307" type="schema" stype="list" owner="hildon-desktop" list_type="int">
++                                                                <local_schema locale="C">
++                                                                        <default type="list" ltype="int">
++                                                                                <li type="int" value="12"/>
++                                                                                <li type="int" value="68"/>
++                                                                        </default>
++                                                                </local_schema>
++                                                        </entry>
++                                                        <entry name="view" mtime="1316616307" type="schema" stype="int" owner="controlpanel">
++                                                                <local_schema locale="C">
++                                                                        <default type="int" value="1"/>
++                                                                </local_schema>
++                                                        </entry>
++                                                </dir
+ 						<dir name="TaskShortcut:modest.desktop">
+ 							<entry name="position" mtime="1316616307" type="schema" stype="list" owner="hildon-desktop" list_type="int">
+ 								<local_schema locale="C">
 
 --- /etc/gconf/schemas/hildon-desktop-application-shortcuts-settings.schema.dist	2016-02-14 17:45:15.000000000 +0200
 +++ /etc/gconf/schemas/hildon-desktop-application-shortcuts-settings.schema	2016-02-14 17:57:32.000000000 +0200
@@ -20,7 +51,7 @@
        <type>list</type>
        <list_type>string</list_type>
 -      <default>[osso-addressbook.desktop,modest.desktop,rtcom-call-ui.desktop]</default>
-+      <default>[root.desktop,osso-addressbook.desktop,modest.desktop,rtcom-call-ui.desktop]</default>
++      <default>[osso-addressbook.desktop,modest.desktop,rtcom-call-ui.desktop,root.desktop]</default>
        <locale name="C"/>
      </schema>
      <!--Settings for osso-addressbook.desktop-->

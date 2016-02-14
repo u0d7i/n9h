@@ -152,7 +152,9 @@ mod_rootfs(){
     # does not work - cssu overwrites changes - move to ref-md.sh
     #patch -N -d  ${MNTPNT}/usr/sbin -r - <${FILES}/pcsuite.patch
     # TODO: fix gconf for /apps/osso/hildon-desktop/applets
+    #
     # EXPERIMENTAL
+    # still dos not work
     echo "/usr/share/applications/hildon-home/root.desktop" > ${MNTPNT}/etc/hildon-desktop/home.safe-set
     echo -e "[root.desktop]\nX-Desktop-File=/usr/share/applications/hildon-home/root.desktop\n" > \
         ${MNTPNT}/etc/hildon-desktop/home.plugins
