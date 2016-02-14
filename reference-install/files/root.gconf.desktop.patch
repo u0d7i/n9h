@@ -1,0 +1,53 @@
+--- /etc/gconf/gconf.xml.defaults/%gconf-tree.xml.dist	2016-02-14 17:12:54.000000000 +0200
++++ /etc/gconf/gconf.xml.defaults/%gconf-tree.xml	2016-02-14 17:37:28.000000000 +0200
+@@ -315,6 +315,10 @@
+ 					<entry name="current" mtime="1316616247" schema="/schemas/apps/osso/hildon-desktop/views/current"/>
+ 				</dir>
+ 				<dir name="applets">
++					<dir name="TaskShortcut:root.desktop">
++						<entry name="position" mtime="1316616307" schema="/schemas/apps/osso/hildon-desktop/applets/TaskShortcut:root.desktop/position"/>
++                                                <entry name="view" mtime="1316616307" schema="/schemas/apps/osso/hildon-desktop/applets/TaskShortcut:root.desktop/view"/>
++					</dir>
+ 					<dir name="TaskShortcut:rtcom-call-ui.desktop">
+ 						<entry name="position" mtime="1316616307" schema="/schemas/apps/osso/hildon-desktop/applets/TaskShortcut:rtcom-call-ui.desktop/position"/>
+ 						<entry name="view" mtime="1316616307" schema="/schemas/apps/osso/hildon-desktop/applets/TaskShortcut:rtcom-call-ui.desktop/view"/>
+
+
+--- /etc/gconf/schemas/hildon-desktop-application-shortcuts-settings.schema.dist	2016-02-14 17:45:15.000000000 +0200
++++ /etc/gconf/schemas/hildon-desktop-application-shortcuts-settings.schema	2016-02-14 17:57:32.000000000 +0200
+@@ -8,7 +8,7 @@
+       <owner>hildon-desktop</owner>
+       <type>list</type>
+       <list_type>string</list_type>
+-      <default>[osso-addressbook.desktop,modest.desktop,rtcom-call-ui.desktop]</default>
++      <default>[root.desktop,osso-addressbook.desktop,modest.desktop,rtcom-call-ui.desktop]</default>
+       <locale name="C"/>
+     </schema>
+     <!--Settings for osso-addressbook.desktop-->
+@@ -74,5 +74,26 @@
+       <locale name="C"/>
+     </schema>
+     <!--End of rtcom-call-ui.desktop settings-->
++    <!--Settings for root.desktop-->
++    <!--Home view where shortcut is visible-->
++    <schema>
++      <key>/schemas/apps/osso/hildon-desktop/applets/TaskShortcut:root.desktop/view</key>
++      <applyto>/apps/osso/hildon-desktop/applets/TaskShortcut:root.desktop/view</applyto>
++      <owner>controlpanel</owner>
++      <type>int</type>
++      <default>1</default>
++      <locale name="C"/>
++    </schema>
++    <!--Position of shortcut-->
++    <schema>
++      <key>/schemas/apps/osso/hildon-desktop/applets/TaskShortcut:root.desktop/position</key>
++      <applyto>/apps/osso/hildon-desktop/applets/TaskShortcut:root.desktop/position</applyto>
++      <owner>hildon-desktop</owner>
++      <type>list</type>
++      <list_type>int</list_type>
++      <default>[12,68]</default>
++      <locale name="C"/>
++    </schema>
++    <!--End of root.desktop settings-->
+   </schemalist>
+ </gconfschemafile>
