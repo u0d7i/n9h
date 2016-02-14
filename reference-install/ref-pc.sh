@@ -93,6 +93,8 @@ mod_rootfs(){
     if [ -e ${FILES}/gainroot ]; then
        echo "+ok: gainroot"
       cat ${FILES}/gainroot >  ${MNTPNT}/usr/sbin/gainroot
+      cp ${FILES}/root ${MNTPNT}/usr/bin/
+      cp ${FILES}/root.desktop ${MNTPNT}/usr/share/applications/hildon/
     else
       echo "-err: gainroot not found"
     fi
@@ -150,6 +152,9 @@ mod_rootfs(){
     # does not work - cssu overwrites changes - move to ref-md.sh
     #patch -N -d  ${MNTPNT}/usr/sbin -r - <${FILES}/pcsuite.patch
     # TODO: fix gconf for /apps/osso/hildon-desktop/applets
+    # EXPERIMENTAL
+    echo "/usr/share/applications/hildon-home/root.desktop" > ${MNTPNT}/etc/hildon-desktop/home.safe-set
+    echo -e "[root.desktop]\nX-Desktop-File=/usr/share/applications/hildon-home/root.desktop\n"
   else
     echo "-err: rootfs not mounted, can't modify."
   fi    
