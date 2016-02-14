@@ -155,7 +155,7 @@ mod_rootfs(){
     # EXPERIMENTAL
     echo "/usr/share/applications/hildon-home/root.desktop" > ${MNTPNT}/etc/hildon-desktop/home.safe-set
     echo -e "[root.desktop]\nX-Desktop-File=/usr/share/applications/hildon-home/root.desktop\n" > \
-        ${MNTPNT}/etc/hildon-desktop/home.plugin
+        ${MNTPNT}/etc/hildon-desktop/home.plugins
   else
     echo "-err: rootfs not mounted, can't modify."
   fi    
