@@ -1,0 +1,2 @@
+#From Andrey Gubarev's easyroot.
+exec sudo gainroot --use-su
