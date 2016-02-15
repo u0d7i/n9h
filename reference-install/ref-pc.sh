@@ -154,7 +154,7 @@ mod_rootfs(){
     # TODO: fix gconf for /apps/osso/hildon-desktop/applets
     #
     # EXPERIMENTAL
-    # still dos not work
+    # still does not work
     echo "/usr/share/applications/hildon-home/root.desktop" > ${MNTPNT}/etc/hildon-desktop/home.safe-set
     echo -e "[root.desktop]\nX-Desktop-File=/usr/share/applications/hildon-home/root.desktop\n" > \
         ${MNTPNT}/etc/hildon-desktop/home.plugins
