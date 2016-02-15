@@ -206,6 +206,28 @@ Device     Boot Start      End  Sectors  Size Id Type
 /dev/sdd1        2048 15677439 15675392  7.5G 83 Linux
 ```
 
+Create LUKS encrypted volume:
+
+```
+root@pc:~# cryptsetup -c aes-cbc-essiv:sha256  -s 128 --align-payload 1032  luksFormat /dev/sdd1
+```
+
+Do the rest:
+
+```
+root@pc:~# cryptsetup luksOpen /dev/sdd1 luks001
+
+root@pc:~# mkfs.ext3 /dev/mapper/luks001
+
+root@pc:~# mount /dev/mapper/luks001 /mnt/
+
+root@pc:~# apt-get install qemu-user-static binfmt-support debootstrap
+
+root@pc:~# qemu-debootstrap --arch armhf wheezy /mnt http://ftp.debian.org/debian
+
+```
+
+
 ## APT
 
 /etc/apt/sources.list
