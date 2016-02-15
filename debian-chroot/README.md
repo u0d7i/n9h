@@ -44,7 +44,6 @@ Verify passphrase:
 Command successful.
 
 Nokia-N900:~# losetup -d /dev/loop
-
 ```
 
 On modern Debian (jessie):
@@ -142,7 +141,6 @@ Key Slot 4: DISABLED
 Key Slot 5: DISABLED
 Key Slot 6: DISABLED
 Key Slot 7: DISABLED
-
 ```
 
 ## APT
