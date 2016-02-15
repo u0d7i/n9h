@@ -4,6 +4,7 @@
 
 * [Prerequisites](#prerequisites)
 * [cryptsetup and kernel versions](#cryptsetup-and-kernel-versions)
+* [Create LUKS encrypted filesystem on a microSD](#create-luks-encrypted-filesystem-on-a-microsd)
 * [APT]($APT)
 
 
@@ -31,6 +32,8 @@ Linux Nokia-N900 2.6.28.10-power53 #1 PREEMPT Wed Dec 10 13:52:39 UTC 2014 armv7
 
 Nokia-N900:~# cryptsetup --version
 cryptsetup 1.0.7
+
+Nokia-N900:~# modprobe dm_mod
 
 Nokia-N900:~# dd if=/dev/zero of=test-md.img bs=1MB count=10
 10+0 records in
@@ -154,6 +157,31 @@ To resemble older cryptsetup defaults present on N900 Maemo we should explicityl
 
 ```
 root@pc:~# cryptsetup -c aes-cbc-essiv:sha256  -s 128 --align-payload 1032  luksFormat test-new.img
+```
+
+## Create LUKS encrypted filesystem on a microSD
+
+On a PC (/dev/sdd is a microSD card, yes I am root):
+
+```
+root@pc:~# fdisk -l /dev/sdd 
+
+Disk /dev/sdd: 7.5 GiB, 8026849280 bytes, 15677440 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xe93edc2a
+
+Device     Boot Start      End  Sectors  Size Id Type
+/dev/sdd1        2048 15677439 15675392  7.5G  b W95 FAT32
+
+```
+
+wipe partition table:
+
+```
+root@pc~# dd if=/dev/zero of=/dev/sdd bs=512 count=1
 ```
 
 ## APT
