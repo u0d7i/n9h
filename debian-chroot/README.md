@@ -1,5 +1,12 @@
 # Debian chroot on Nokia N900
 
+## Contents
+
+* [Prerequisites](#prerequisites)
+* [cryptsetup and kernel versions](#cryptsetup-and-kernel-versions)
+* [APT]($APT)
+
+
 ## Prerequisites
 
 * [N900 reference install](../reference-install)
