@@ -71,7 +71,7 @@ Enter passphrase:
 Verify passphrase: 
 ```
 
-Now we can cmpare both images (on a pc):
+Now we can compare both images (on a pc):
 
 ```
 root@pc:~# file test-*.img
@@ -141,6 +141,12 @@ Key Slot 4: DISABLED
 Key Slot 5: DISABLED
 Key Slot 6: DISABLED
 Key Slot 7: DISABLED
+```
+
+To resemble older cryptsetup defaults present on N900 Maemo we should explicityly specify parameters on modern Debian:
+
+```
+root@pc:~# cryptsetup -c aes-cbc-essiv:sha256  -s 128 --align-payload 1032  luksFormat test-new.img
 ```
 
 ## APT
