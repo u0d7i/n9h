@@ -114,6 +114,7 @@ Key Slot 7: DISABLED
 ```
 
 ```
+root@pc:~# cryptsetup luksDump test-pc.img
 LUKS header information for test-pc.img
 
 Version:        1
