@@ -225,8 +225,34 @@ root@pc:~# apt-get install qemu-user-static binfmt-support debootstrap
 
 root@pc:~# qemu-debootstrap --arch armhf wheezy /mnt http://ftp.debian.org/debian
 
+root@pc:~# for d in dev proc sys dev/pts; do mount -o bind /${d} /mnt/${d}; done
+
+root@pc:~# chroot /mnt
+
+# cat > /etc/apt/sources.list << EOF
+deb http://httpredir.debian.org/debian wheezy main contrib non-free
+deb http://security.debian.org/ wheezy/updates main contrib non-free
+deb http://httpredir.debian.org/debian/ wheezy-updates main contrib non-free
+EOF
+
+# cat > /etc/apt/apt.conf.d/10recommends <<EOF
+APT::Install-Recommends "0";
+APT::Install-Suggests "0";
+EOF
+
+# apt-get update && apt-get -y upgrade
+
+# apt-get install locales && dpkg-reconfigure locales
+>> select all en_GB* and en_US*, default to en_US.UTF-8
+
+# exit
+
+root@pc:~# for d in dev/pts dev proc sys; do umount /mnt/${d}; done
+root@pc:~# umount /mnt
+root@pc:~# cryptsetup luksClose luks001
 ```
 
+Now remove SD card from PC and place it back into N900.
 
 ## APT
 
