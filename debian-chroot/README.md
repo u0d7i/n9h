@@ -184,6 +184,28 @@ wipe partition table:
 root@pc~# dd if=/dev/zero of=/dev/sdd bs=512 count=1
 ```
 
+Create partition table and single 'Linux' type partition:
+
+```
+root@pc:~# echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/sdd
+```
+
+Verify:
+
+```
+root@pc:~# fdisk -l /dev/sdd 
+
+Disk /dev/sdd: 7.5 GiB, 8026849280 bytes, 15677440 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xbfb41717
+
+Device     Boot Start      End  Sectors  Size Id Type
+/dev/sdd1        2048 15677439 15675392  7.5G 83 Linux
+```
+
 ## APT
 
 /etc/apt/sources.list
