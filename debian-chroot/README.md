@@ -6,10 +6,11 @@
 * [kernel-power](https://wiki.maemo.org/Kernel_power)
 * [Easy_Debian](https://wiki.maemo.org/Easy_Debian)
 * cryptsetup
+* dmsetup
 * microSD card
 
 
-`~# apt-get install cryptsetup easy-deb-chroot`
+`~# apt-get install cryptsetup dmsetup easy-deb-chroot`
 
 
 ## APT
