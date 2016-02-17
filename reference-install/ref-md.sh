@@ -190,7 +190,7 @@ tune(){
     # tracker
     sed -i -e "s/Throttle=0/Throttle=10/" /home/user/.config/tracker/tracker.cfg
     # move root home to bigger partition
-    if stat /root | grep "symbolic link" > /dev/null; then
+    if [ -L /root ]; then
       echo "!warn:: /root is symlink already."
     else
       mv /root /home/
