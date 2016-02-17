@@ -190,8 +190,12 @@ tune(){
     # tracker
     sed -i -e "s/Throttle=0/Throttle=10/" /home/user/.config/tracker/tracker.cfg
     # move root home to bigger partition
-    mv /root /home/
-    ln -sf /home/root /root
+    if stat /root | grep "symbolic link" > /dev/null; then
+      echo "!warn:: /root is symlink already."
+    else
+      mv /root /home/
+      ln -sf /home/root /root
+    fi
     # remove startup wizard after battery swap
     if [ -e /etc/X11/Xsession.d/30osso_startup_wizard ]; then
         mv /etc/X11/Xsession.d/30osso_startup_wizard /root/
