@@ -8,6 +8,7 @@
 * [Firmware modifications](#firmware-modifications)
     * [eMMC](#emmc)
     * [rootfs](#rootfs)
+      * [Changes in mounted rootfs image](#changes-in-mounted-rootfs-image)
 
 
 ## Prerequisites
@@ -149,3 +150,4 @@ Cleaning up:
     $ rmmod ubi
     $ rmmod nandsim
 
+#### Changes in mounted rootfs image
