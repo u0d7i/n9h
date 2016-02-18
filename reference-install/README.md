@@ -10,7 +10,7 @@
     * [rootfs](#rootfs)
       * [Changes in mounted rootfs image](#changes-in-mounted-rootfs-image)
     * [Flashing](#flashing)
-    * [On-device modifications](#on-device-modifications)
+* [On-device modifications](#on-device-modifications)
 
 
 ## Prerequisites
@@ -203,5 +203,5 @@ Full flashing session takes aproximetely 5-6 minutes on a decent hardware.
 When flasher is done, remove battery, unplug USB, then reinsert battery
 and let device boot and init system.
 
-### On-device modifications
+## On-device modifications
 
