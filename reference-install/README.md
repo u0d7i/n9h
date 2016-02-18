@@ -9,6 +9,8 @@
     * [eMMC](#emmc)
     * [rootfs](#rootfs)
       * [Changes in mounted rootfs image](#changes-in-mounted-rootfs-image)
+    * [Flashing](#flashing)
+    * [On-device modifications](#on-device-modifications)
 
 
 ## Prerequisites
@@ -151,3 +153,8 @@ Cleaning up:
     $ rmmod nandsim
 
 #### Changes in mounted rootfs image
+
+### Flashing
+
+### On-device modifications
+
