@@ -183,6 +183,20 @@ $ rmmod nandsim
 
 #### Changes in mounted rootfs image
 
+All needed files or symlinks are placed in [files/](files/) directory.
+
+##### gainroot
+
+The most important thing is being able to gain root access on a device without need to install anything.
+This change resembles installing [rootsh](https://wiki.maemo.org/Root_access#rootsh) package.
+It also creates "Root terminal" shotrcut in menu.
+
+```
+# cat files/gainroot > /mnt/n900/usr/sbin/gainroot
+# cp files/root /mnt/n900/usr/bin/
+# cp files/root.desktop /mnt/n900/usr/share/applications/hildon/
+```
+
 ### Flashing
 
 As root, start flasher (assuming firmware binaries are in the same directory):
