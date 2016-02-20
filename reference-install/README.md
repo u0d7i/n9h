@@ -206,9 +206,22 @@ As described [here](http://wiki.maemo.org/Remapping_keyboard).
 ```
 # cat files/rx-51.mod > /mnt/n900/usr/share/X11/xkb/symbols/nokia_vndr/rx-51
 ```
+Levels:
+* L1 - (key)
+* L2 - shif+(key)
+* L3 - blue/fn+(key)
+* L4 - shift+fn+(key)
 
 Changes are visible in a diff [here](../kbd/rx-51.diff):
-  * Braces on L4 'h' and 'j' (on L3 parentheses) - fn+shift(h) gives '{'
+* braces on L4 'h' and 'j' (on L3 parentheses) - fn+shift(h) gives '{'
+* brackets on L4 'g' and 'k' (nearby L3 parentheses)
+* move '?' to L4 and leave '.' in L3 to make typing IP adresses in locked 'fn' easier
+* move '@' to L4 to use spacebar normally in locked 'fn'
+* move '€' and '£; to L4, and replace them with '|' and '%' on L3
+* UP arrow L2 '^' and L3 'PageUp'
+* DOWN arrow L2 '~' and L3 'PageDown'
+* LEFT arrow L2 '<' and L3 'Escape'
+* RIGHT arrow L2 '>" and L3 'Tab'
 
 
 ### Flashing
