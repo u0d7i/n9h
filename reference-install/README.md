@@ -218,10 +218,10 @@ Changes are visible in a diff [here](../kbd/rx-51.diff):
 * move '?' to L4 and leave '.' in L3 to make typing IP adresses in locked 'fn' easier
 * move '@' to L4 to use spacebar normally in locked 'fn'
 * move '€' and '£; to L4, and replace them with '|' and '%' on L3
-* UP arrow L2 '^' and L3 'PageUp'
-* DOWN arrow L2 '~' and L3 'PageDown'
-* LEFT arrow L2 '<' and L3 'Escape'
-* RIGHT arrow L2 '>" and L3 'Tab'
+* UP arrow - L2 '^' and L3 'PageUp'
+* DOWN arrow - L2 '~' and L3 'PageDown'
+* LEFT arrow - L2 '<' and L3 'Escape'
+* RIGHT arrow - L2 '>' and L3 'Tab'
 
 
 ### Flashing
