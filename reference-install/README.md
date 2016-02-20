@@ -197,6 +197,16 @@ It also creates "Root terminal" shotrcut in menu.
 # cp files/root.desktop /mnt/n900/usr/share/applications/hildon/
 ```
 
+##### remapping keyboard
+
+As described [here](details here: http://wiki.maemo.org/Remapping_keyboard).
+
+```
+# cat files/rx-51.mod > /mnt/n900/usr/share/X11/xkb/symbols/nokia_vndr/rx-51
+```
+
+Changes are visible in a diff [here](../kbd/rx-51.diff).
+
 ### Flashing
 
 As root, start flasher (assuming firmware binaries are in the same directory):
