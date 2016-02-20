@@ -199,7 +199,7 @@ It also creates "Root terminal" shotrcut in menu.
 
 ##### remapping keyboard
 
-As described [here](details here: http://wiki.maemo.org/Remapping_keyboard).
+As described [here](http://wiki.maemo.org/Remapping_keyboard).
 
 ```
 # cat files/rx-51.mod > /mnt/n900/usr/share/X11/xkb/symbols/nokia_vndr/rx-51
