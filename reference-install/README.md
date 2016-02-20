@@ -9,6 +9,8 @@
     * [eMMC](#emmc)
     * [rootfs](#rootfs)
       * [Changes in mounted rootfs image](#changes-in-mounted-rootfs-image)
+        * [gainroot](#gainroot)
+        * [remapping keyboard](#remapping-keyboard)
     * [Flashing](#flashing)
 * [On-device modifications](#on-device-modifications)
 
@@ -205,7 +207,9 @@ As described [here](http://wiki.maemo.org/Remapping_keyboard).
 # cat files/rx-51.mod > /mnt/n900/usr/share/X11/xkb/symbols/nokia_vndr/rx-51
 ```
 
-Changes are visible in a diff [here](../kbd/rx-51.diff).
+Changes are visible in a diff [here](../kbd/rx-51.diff):
+  * Braces on L4 'h' and 'j' (on L3 parentheses) - fn+shift(h) gives '{'
+
 
 ### Flashing
 
