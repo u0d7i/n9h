@@ -48,6 +48,7 @@ EOF
     # dirty hack
     # not gonna use it EVER. track trace and fixme if opposite
     ln -sf /dev/null $apt_src_block
+    # FIXME: do it in a single loop
     # remap cache
     if stat /var/cache/apt | grep /opt/var/cache > /dev/null; then
       echo "!warn: apt cache already remapped. skipping..."
@@ -56,7 +57,14 @@ EOF
       mv /var/cache/apt /opt/var/cache/
       ln -sf /opt/var/cache/apt /var/cache/apt
     fi
-
+    # remap apt lib
+    if stat /var/lib/apt | grep /opt/var/lib > /dev/null; then
+        echo "!warn: apt lib alrady remapped. skipping..."
+    else
+        mkdir -p /opt/var/lib
+        mv /var/lib/apt /opt/var/lib/
+        ln -sf /opt/var/lib/apt /var/lib/apt
+    fi
 }
 
 conn(){
