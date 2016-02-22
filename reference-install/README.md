@@ -226,7 +226,7 @@ Changes are visible in a diff [here](../kbd/rx-51.diff):
 
 ##### replacing busybox
 
-Native busybox lacks plenty of stuff. We can replac original `busybox` binary with
+Native busybox lacks plenty of stuff. We can replace original `busybox` binary with
 the one, present in [busybox-power](http://maemo.org/packages/view/busybox-power/)
 package.
 
