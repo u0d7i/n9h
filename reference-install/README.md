@@ -11,6 +11,7 @@
       * [Changes in mounted rootfs image](#changes-in-mounted-rootfs-image)
         * [gainroot](#gainroot)
         * [remapping keyboard](#remapping-keyboard)
+        * [replacing busybox](#replacing-busybox)
     * [Flashing](#flashing)
 * [On-device modifications](#on-device-modifications)
 
@@ -223,6 +224,18 @@ Changes are visible in a diff [here](../kbd/rx-51.diff):
 * `LEFT` arrow - L2 `<` and L3 `Escape`
 * `RIGHT` arrow - L2 `>` and L3 `Tab`
 
+##### replacing busybox
+
+Native busybox lacks plenty of stuff. We can replac original `busybox` binary with
+the one, present in [busybox-power](http://maemo.org/packages/view/busybox-power/)
+package.
+
+```
+# echo "f018846a83de458e40d875af819c4e8a files/busybox" | md5sum -c
+files/busybox: OK
+
+# cat files/busybox > /mnt/n900/bin/busybox
+```
 
 ### Flashing
 
