@@ -95,6 +95,12 @@ mod_rootfs(){
       cat ${FILES}/gainroot >  ${MNTPNT}/usr/sbin/gainroot
       cp ${FILES}/root ${MNTPNT}/usr/bin/
       cp ${FILES}/root.desktop ${MNTPNT}/usr/share/applications/hildon/
+      if [ -e ${FILES}/root.xpm]; then
+          # FIXME: add test for imagemagick
+          convert ${FILES}/root.xpm -resize 48x48 ${MNTPNT}/usr/share/pixmaps/root.png
+      else
+          "-err: root.xpm not found"
+      fi
     else
       echo "-err: gainroot not found"
     fi
@@ -144,15 +150,7 @@ mod_rootfs(){
     # cherry
     echo "+ok: kill cherry"
     echo '#!/bin/sh' >  ${MNTPNT}/usr/bin/cherry
-    # apt sources: should we do it here,
-    # or leave the option for hildon-application-manager ?
-    #ln -sf /dev/null ${MNTPNT}/etc/apt/sources.list.d/hildon-application-manager.list
-    # patches
-    #echo "+ok: patching pcsuite mode..."
-    # does not work - cssu overwrites changes - move to ref-md.sh
-    #patch -N -d  ${MNTPNT}/usr/sbin -r - <${FILES}/pcsuite.patch
     # TODO: fix gconf for /apps/osso/hildon-desktop/applets
-    #
     # EXPERIMENTAL
     # still does not work
     echo "/usr/share/applications/hildon-home/root.desktop" > ${MNTPNT}/etc/hildon-desktop/home.safe-set
