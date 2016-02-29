@@ -95,7 +95,7 @@ mod_rootfs(){
       cat ${FILES}/gainroot >  ${MNTPNT}/usr/sbin/gainroot
       cp ${FILES}/root ${MNTPNT}/usr/bin/
       cp ${FILES}/root.desktop ${MNTPNT}/usr/share/applications/hildon/
-      if [ -e ${FILES}/root.xpm]; then
+      if [ -e ${FILES}/root.xpm ]; then
           # FIXME: add test for imagemagick
           convert ${FILES}/root.xpm -resize 48x48 ${MNTPNT}/usr/share/pixmaps/root.png
       else
@@ -152,11 +152,10 @@ mod_rootfs(){
     echo '#!/bin/sh' >  ${MNTPNT}/usr/bin/cherry
     # TODO: fix gconf for /apps/osso/hildon-desktop/applets
     # EXPERIMENTAL
-    # still does not work
-    echo "/usr/share/applications/hildon-home/root.desktop" > ${MNTPNT}/etc/hildon-desktop/home.safe-set
-    echo -e "[root.desktop]\nX-Desktop-File=/usr/share/applications/hildon-home/root.desktop\n" > \
-        ${MNTPNT}/etc/hildon-desktop/home.plugins
-    patch -N -p1 -d  ${MNTPNT} <${FILES}/root.gconf.desktop.patch
+    #echo "/usr/share/applications/hildon-home/root.desktop" > ${MNTPNT}/etc/hildon-desktop/home.safe-set
+    #echo -e "[root.desktop]\nX-Desktop-File=/usr/share/applications/hildon-home/root.desktop\n" > \
+    #    ${MNTPNT}/etc/hildon-desktop/home.plugins
+    #patch -N -p1 -d  ${MNTPNT} <${FILES}/root.gconf.desktop.patch
   else
     echo "-err: rootfs not mounted, can't modify."
   fi    
