@@ -11,16 +11,33 @@ if [ $(id -u) -ne 0 ]; then
   exit
 fi
 
+# FIXME: rearrange with functions
 case $1 in
   on)
-    echo "on"
+    # load modules
+    modprobe dm_mod
+    modprobe dm_crypt
+    modprobe dm_loop
+    # check if we already open
+    if [ -e /dev/mapper/${LM} ]; then
+      echo "$LM already mapped..."
+    else
+      cryptsetup luksOpen $LP $LM
+    fi
+    qchroot /dev/mapper/${LM} $CR
     ;;
   off)
-    echo "off"
+    closechroot
+    if [ -e /dev/mapper/${LM} ]; then
+      echo "luksClose $LM..."
+      cryptsetup luksClose $LM
+    else
+      echo "$LM not mapped..."
+    fi
     ;;
   *)
-    echo "usage: $0 <action>"
-    echo "  on - setup and chroot to debian"
-    echo "  off - close chroot"
+    echo "usage: $(basename $0) <action>"
+    echo "  on - enable and chroot"
+    echo "  off - disable and close"
     ;;
 esac
