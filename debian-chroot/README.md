@@ -13,14 +13,14 @@
 
 * [N900 reference install](../reference-install)
 * [kernel-power](https://wiki.maemo.org/Kernel_power)
-* [Easy_Debian](https://wiki.maemo.org/Easy_Debian)
+* [Easy_Debian](https://wiki.maemo.org/Easy_Debian) (actually, [easy-chroot](http://maemo.org/packages/view/easy-chroot/) is enough)
 * cryptsetup
 * dmsetup (optional)
 * microSD card
 
 
 ```
-Nokia-N900:~# apt-get install cryptsetup dmsetup easy-deb-chroot
+Nokia-N900:~# apt-get install cryptsetup dmsetup easy-chroot
 ```
 
 ## cryptsetup and kernel versions
