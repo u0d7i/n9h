@@ -128,7 +128,7 @@ mod_rootfs(){
         echo "-err: can't replace busybox"
       fi
     fi
-    for bin in ccrypt qp apt-get
+    for bin in ccrypt qp apt-get deb
     do
       if [ -e ${FILES}/${bin} ]; then
         cp ${FILES}/${bin} ${MNTPNT}/usr/local/bin/ && echo "+ok: copy ${bin}"
