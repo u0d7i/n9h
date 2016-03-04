@@ -278,3 +278,11 @@ Package: *
 Pin: release a=wheezy-backports-sloppy
 Pin-Priority: 500
 ```
+
+## On-device scripts
+
+There are 2 possible scenarios on device:
+
+* Adapt chroot to stock easy-chroot scripts
+* Customize scripts to reflect our specific needs
+
