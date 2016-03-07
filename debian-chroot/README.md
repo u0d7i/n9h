@@ -7,6 +7,7 @@
 * [Create LUKS encrypted filesystem on a microSD](#create-luks-encrypted-filesystem-on-a-microsd)
 * [Install Debian armhf](#install-debian-armhf)
 * [APT]($APT)
+* [On-device scripts](#on-device-scripts)
 
 
 ## Prerequisites
