@@ -332,3 +332,17 @@ Nokia-N900:~# diff -u /sbin/closechroot.dist /sbin/closechroot
  umount -fl $CHROOT/dev/shm
  
 ~~~
+
+In chroot:
+
+~~~
+# cd /var
+# rm run
+# ln -sf ../run
+# rm lock
+# ln -sf ../run/lock
+# mkdir /var/run/dbus
+#  mkdir /var/run/pulse
+#  mkdir /var/lib/dbus
+~~~
+
