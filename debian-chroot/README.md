@@ -342,7 +342,7 @@ In chroot:
 # rm lock
 # ln -sf ../run/lock
 # mkdir /var/run/dbus
-#  mkdir /var/run/pulse
-#  mkdir /var/lib/dbus
+# mkdir /var/run/pulse
+# mkdir /var/lib/dbus
 ~~~
 
