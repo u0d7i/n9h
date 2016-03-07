@@ -286,3 +286,49 @@ There are 2 possible scenarios on device:
 * Adapt chroot to stock easy-chroot scripts
 * Customize scripts to reflect our specific needs
 
+We will combine both:
+
+~~~
+Nokia-N900:~# diff -u /sbin/qchroot.dist /sbin/qchroot
+--- /sbin/qchroot.dist
++++ /sbin/qchroot
+@@ -54,10 +54,10 @@
+   #Gentoo wiki says this will make X work
+   echo .. >/dev/stderr
+   mount -t devpts none "$CHROOT/dev/pts"
+-  mount -o bind /tmp "$CHROOT/tmp"
++  #mount -o bind /tmp "$CHROOT/tmp"
+ 
+   #Open e-mail attachments, etc
+-  mount -o bind /var/tmp "$CHROOT/var/tmp"
++  #mount -o bind /var/tmp "$CHROOT/var/tmp"
+ 
+   #ArchLinux suggestions
+   mount -o bind /dev/shm "$CHROOT/dev/shm"
+@@ -79,8 +79,8 @@
+   #mount -o bind /home/user "$CHROOT/home/user"
+ 
+   # Do it the Fremantle way.
+-  mount /dev/mmcblk0p2 "$CHROOT/home"
+-  mount /dev/mmcblk0p1 "$CHROOT/home/user/MyDocs"
++  #mount /dev/mmcblk0p2 "$CHROOT/home"
++  #mount /dev/mmcblk0p1 "$CHROOT/home/user/MyDocs"
+   
+   #Make DBus work
+   mount -o bind /var/run/dbus "$CHROOT/var/run/dbus"
+~~~
+
+~~~
+Nokia-N900:~# diff -u /sbin/closechroot.dist /sbin/closechroot
+--- /sbin/closechroot.dist
++++ /sbin/closechroot
+@@ -80,7 +80,7 @@
+ 
+ #Any external mounts
+ 
+-umount -fl $CHROOT/home/user/MyDocs
++umount -fl $CHROOT/home/user/MyDocs 2>/dev/null
+ umount -fl $CHROOT/dev/pts
+ umount -fl $CHROOT/dev/shm
+ 
+~~~
