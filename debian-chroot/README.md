@@ -353,5 +353,7 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 # groupadd -g 102 crontab
+
+# echo "/dev/mapper/mmc1 / ext3 noatime,nobh,nodiratime 0 0" > /etc/mtab
 ~~~
 
