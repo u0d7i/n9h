@@ -345,5 +345,13 @@ In chroot:
 # mkdir /var/run/dbus
 # mkdir /var/run/pulse
 # mkdir /var/lib/dbus
+
+# touch /var/run/{onfirstchroot.rc,onchroot-ext.rc,onchroot.rc}
+# chmod +x /var/run/{onfirstchroot.rc,onchroot-ext.rc,onchroot.rc}
+# vi /var/run/onchroot-ext.rc
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+# groupadd -g 102 crontab
 ~~~
 
