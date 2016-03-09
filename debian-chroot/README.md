@@ -334,18 +334,27 @@ Nokia-N900:~# diff -u /sbin/closechroot.dist /sbin/closechroot
  
 ~~~
 
+On FS:
+
+~~~
+# echo {dm_mod,dm_crypt,dm_loop} | xargs -t -n1  modprobe
+# cryptsetup luksOpen /dev/mmcblk1p1 mmc1
+# mount  /dev/mapper/mmc1 /.debian
+
+# cd /.debian/
+# rm var/run
+# mv run var/
+# ln -sf var/run run
+# mkdir var/run/dbus
+# mkdir var/run/pulse
+# mkdir var/lib/dbus
+# rm var/lock
+# ln -sf ../run/lock var/lock
+~~~
+
 In chroot:
 
 ~~~
-# cd /var
-# rm run
-# ln -sf ../run
-# rm lock
-# ln -sf ../run/lock
-# mkdir /var/run/dbus
-# mkdir /var/run/pulse
-# mkdir /var/lib/dbus
-
 # touch /var/run/{onfirstchroot.rc,onchroot-ext.rc,onchroot.rc}
 # chmod +x /var/run/{onfirstchroot.rc,onchroot-ext.rc,onchroot.rc}
 # vi /var/run/onchroot-ext.rc
