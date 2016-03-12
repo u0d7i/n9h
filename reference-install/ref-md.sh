@@ -157,7 +157,7 @@ install(){
         echo "+ok: installing stuff..."
         apt-get -y --force-yes install bash4 busybox-power cell-modem-ui \
             cpumem-applet i2c-tools kernel-power-flasher kernel-power-settings \
-            openssh  rootsh usbip vim
+            openssh  rootsh usbmode vim
         apt-get clean
         return 0
     else
