@@ -4,7 +4,7 @@ CFG="connectivity.gconf.cpt"
 # prepate it with
 # gconftool -R /system/osso/connectivity/IAP/<conn_id>
 # encrypt with ccrypt
-# save to modified rootfs together with this scrupt
+# save to modified rootfs together with this script
 
 if [ -z "$(command -v ccrypt)" ]; then
         echo "ccrypt not installed"
