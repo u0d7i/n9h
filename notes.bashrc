@@ -66,6 +66,12 @@ notes-rm(){
     fi
 }
 
+notes-cat(){
+    if [ -n "$*" ]; then
+        cat ${NOTES}/"$*".txt
+    fi
+}
+
 notes-ls(){
     # TODO: tune/colorize
     find ${NOTES}/ -maxdepth 1 -name '*.txt' -printf '%CF %CH:%CM\t%f\n' | \
@@ -100,3 +106,4 @@ _notes(){
 complete -o nospace -F _notes notes
 complete -o nospace -F _notes notes-rm
 complete -o nospace -F _notes notes-cp
+complete -o nospace -F _notes notes-cat
