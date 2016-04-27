@@ -24,6 +24,7 @@ notes(){
     if [ -n "$*" ]; then
         vim ${NOTES}/"$*".txt
     else
+        # FIXME: check for empty dir
         vim ${NOTES}
     fi
     notes-commit "$*"
@@ -67,7 +68,7 @@ notes-rm(){
 
 notes-ls(){
     # TODO: tune/colorize
-    find ${NOTES}/*.txt -maxdepth 1 -printf '%CF %CH:%CM\t%f\n' | \
+    find ${NOTES}/ -maxdepth 1 -name '*.txt' -printf '%CF %CH:%CM\t%f\n' | \
         sed 's/\.txt$//'
 }
 
@@ -89,7 +90,7 @@ _notes(){
     local cur names IFS
 
     cur="${COMP_WORDS[COMP_CWORD]}"
-    names=$(cd ${NOTES}; ls *.txt | sed 's/\.txt$//')
+    names=$(cd ${NOTES}; ls *.txt 2>/dev/null | sed 's/\.txt$//')
     # space is not a field separator here
     IFS=$'\t\n'
 
