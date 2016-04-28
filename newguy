@@ -41,7 +41,7 @@ shift $((OPTIND-1))
 [  $# -eq 0 ] && usage
 
 # check if our argument is an interface or a file
-if ip link show dev $1 > /dev/null 2>&1; then
+if /sbin/ifconfig $1 > /dev/null 2>&1; then
     echo "--- capturing for ${T} seconds on $1 ..."
     FN="${TS}-${1}-${T}s.cap"
     timeout ${T} ${TCPDUMP} -i $1 -w ${FN} -s0
