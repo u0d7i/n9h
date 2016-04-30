@@ -19,16 +19,24 @@ IF="wlan0"
 # don't expect compatibility
 # don't trust iwlist on the order
 iwlist ${IF} scan | \
-    egrep "Address:|Channel:|ESSID:|Encryption key:" | \
-    sed -e 's/Channel:/ch:/' -e 's/Encryption //' | \
-    sed 'N;N;N;s/\n/;/g' | \
+    egrep "Address:|Channel:|ESSID:|Encryption key:|Quality=" | \
+    sed -e 's/Channel:/ch:/' -e 's/Encryption //' \
+        -e 's/Quality=/q:/' -e 's/ Signal level=.*//' | \
+    sed 'N;N;N;N;s/\n/;/g' | \
     sed -e 's/^[ \t]*//' -e 's/;[ \t]*/;/g' -e 's/Cell.*- Address: /BSSID:/' | \
     while read line
     do
-        for a in $(seq 4)
+        for a in $(seq 5)
         do
-            echo $line | cut -d\; -f${a}
-        done | sort | sed -e 'N;N;N;s/\n/;/g' -e 's/[BE]SSID://g'
+            echo $line | cut -d\; -f${a} | while read subline
+            do
+                # do something on each element if needed
+                if [[ $subline =~ ^q: ]]; then
+                    subline="q:$(( 100 * $(echo $subline | cut -d: -f2) ))%"
+                fi
+                echo $subline
+            done
+        done | sort | sed -e 'N;N;N;N;s/\n/;/g' -e 's/[BE]SSID://g' -e 's/q://'
     done | \
-    awk -F\; '{printf "%s %-5s %-7s %s\n", $1,$2,$4,$3}'
+    awk -F\; '{printf "%s %-4s %-5s %-7s %s\n", $1,$5,$2,$4,$3}'
 
