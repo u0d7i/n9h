@@ -232,9 +232,9 @@ root@pc:~# for d in dev proc sys dev/pts; do mount -o bind /${d} /mnt/${d}; done
 root@pc:~# chroot /mnt
 
 # cat > /etc/apt/sources.list << EOF
-deb http://httpredir.debian.org/debian wheezy main contrib non-free
+deb http://ftp.debian.org/debian wheezy main contrib non-free
 deb http://security.debian.org/ wheezy/updates main contrib non-free
-deb http://httpredir.debian.org/debian/ wheezy-updates main contrib non-free
+deb http://ftp.debian.org/debian/ wheezy-updates main contrib non-free
 EOF
 
 # cat > /etc/apt/apt.conf.d/10recommends <<EOF
@@ -261,11 +261,11 @@ Now remove SD card from PC and place it back into N900.
 /etc/apt/sources.list
 
 ```
-deb http://httpredir.debian.org/debian wheezy main contrib non-free
+deb http://ftp.debian.org/debian wheezy main contrib non-free
 deb http://security.debian.org/ wheezy/updates main contrib non-free
-deb http://httpredir.debian.org/debian/ wheezy-updates main contrib non-free
-deb http://httpredir.debian.org/debian wheezy-backports main contrib non-free
-deb http://httpredir.debian.org/debian wheezy-backports-sloppy main contrib non-free
+deb http://ftp.debian.org/debian/ wheezy-updates main contrib non-free
+deb http://ftp.debian.org/debian wheezy-backports main contrib non-free
+deb http://ftp.debian.org/debian wheezy-backports-sloppy main contrib non-free
 ```
 
 /etc/apt/preferences.d/backports 
