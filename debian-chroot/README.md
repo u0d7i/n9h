@@ -155,7 +155,7 @@ Key Slot 6: DISABLED
 Key Slot 7: DISABLED
 ```
 
-To resemble older cryptsetup defaults present on N900 Maemo we should explicityly specify parameters on modern Debian:
+To resemble older cryptsetup defaults present on N900 Maemo we should explicitly specify parameters on modern Debian:
 
 ```
 root@pc:~# cryptsetup -c aes-cbc-essiv:sha256  -s 128 --align-payload 1032  luksFormat test-new.img

@@ -117,7 +117,7 @@ $ sudo apt-get install mtd-utils
 
 Follow instructions [courtesy of Pali](https://talk.maemo.org/showpost.php?p=1325044&postcount=13):
 
-1.) Load nandsim module (which emulate nand mtd device) with same layout as has N900:
+1.) Load nandsim module (which emulates nand mtd device) with the same layout as N900:
 
 ```
 $ modprobe nandsim first_id_byte=0x20 second_id_byte=0xaa \
@@ -251,7 +251,7 @@ Suitable USB device not found, waiting.
 ```
 
 Remove battery from N900, plug N900 to a primary (non-hub) USB port.
-Then insert battery, which should result in flashe continuing.
+Then insert battery, which should result in flasher continuing.
 
 Full flashing session takes aproximetely 5-6 minutes on a decent hardware.
 When flasher is done, remove battery, unplug USB, then reinsert battery
