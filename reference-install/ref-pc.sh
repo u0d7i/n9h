@@ -1,8 +1,10 @@
 #!/bin/bash
 # reference install script to run on a pc
 
+BASEURL="http://maemo-repos.com/apt-mirror/tablets-dev"
 VANILLA="RX-51_2009SE_10.2010.13-2.VANILLA_PR_EMMC_MR0_ARM.bin"
 COMBINED="RX-51_2009SE_21.2011.38-1_PR_COMBINED_MR0_ARM.bin"
+FLAR="maemo_flasher-3.5_2.5.2.2.tar.gz"
 FLASHER="./flasher-3.5"
 ROOTFS="rootfs_RX-51_2009SE_21.2011.38-1_PR_MR0"
 MNTPNT="/mnt/n900"
@@ -27,11 +29,10 @@ usage(){
 
 get_stuff(){
   echo "+ok: downloading stuff..."
-  BASEURL="http://maemo-repos.com/apt-mirror/tablets-dev"
   wget -c "$BASEURL/nokia_N900/$VANILLA" 
   wget -c "$BASEURL/nokia_N900/$COMBINED"
-  FLURL="$BASEURL/maemo_dev_env_downloads/maemo_flasher-3.5_2.5.2.2.tar.gz"
-  wget -qO-  "$FLURL"  | tar -zxv maemo_flasher-3.5_2.5.2.2/flasher-3.5 --strip 1
+  wget -c "$BASEURL/maemo_dev_env_downloads/$FLAR"
+  tar --wildcards -zxvf "$FLAR"  "*/${FLASHER:2}" --strip 1
 }
 
 md5s(){
@@ -39,6 +40,7 @@ md5s(){
   if cat << EOF | md5sum -c -
 488809ff96a0a05479d692e9f77aeb4f  RX-51_2009SE_10.2010.13-2.VANILLA_PR_EMMC_MR0_ARM.bin
 095259c2380e894dc1d6a2999526ec9f  RX-51_2009SE_21.2011.38-1_PR_COMBINED_MR0_ARM.bin
+0daa9898360f83bcb10db73775e70785  maemo_flasher-3.5_2.5.2.2.tar.gz
 b27ba8b9dff405c7370c7673bb43ffb4  flasher-3.5
 EOF
   then
