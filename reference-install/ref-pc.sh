@@ -12,6 +12,7 @@ usage(){
     echo "usage: $0 <action>"
     echo "actions:"
     echo "  all - do everything (normal use)"
+    echo "  get - get firmware and flasher"
     echo "  md5 - check md5"
     echo "  patch - patch VANILLA"
     echo "  xtract - extract rootfs image"
@@ -24,6 +25,12 @@ usage(){
     exit
 }
 
+get_stuff(){
+  echo "+ok: downloading stuff..."
+  BASEURL="http://maemo.cloud-7.de/maemo5/fiasco+co"
+  wget -c "$BASEURL/_$VANILLA" -O $VANILLA
+  wget -c "$BASEURL/_$COMBINED" -O $COMBINED
+}
 
 md5s(){
   echo "+ok: checking md5..."
@@ -240,6 +247,7 @@ fi
 # do stuff
 case $1 in
     all)
+        get_stuff
         if md5s; then
           patch_vanilla || exit
           xtract_rootfs || exit
@@ -249,6 +257,9 @@ case $1 in
           cleanup
           flash
         fi
+        ;;
+    get)
+        get_stuff
         ;;
     md5)
         md5s
