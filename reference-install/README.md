@@ -5,6 +5,7 @@
 * [Prerequisites](#prerequisites)
     * [Flashers](#flashers)
     * [Firmware images](#firmware-images)
+* [Summary](#summary)
 * [Firmware modifications](#firmware-modifications)
     * [eMMC](#emmc)
     * [rootfs](#rootfs)
@@ -57,6 +58,16 @@ MD5:
 ```
 488809ff96a0a05479d692e9f77aeb4f  RX-51_2009SE_10.2010.13-2.VANILLA_PR_EMMC_MR0_ARM.bin
 095259c2380e894dc1d6a2999526ec9f  RX-51_2009SE_21.2011.38-1_PR_COMBINED_MR0_ARM.bin
+```
+## Summary
+
+TL;DR
+
+```
+$ git clone https://github.com/u0d7i/n9h reference-install
+$ cd reference-install
+$ git filter-branch --subdirectory-filter reference-install/
+$ sudo ./ref-pc.sh all
 ```
 
 ## Firmware modifications
