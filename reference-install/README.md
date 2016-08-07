@@ -64,10 +64,8 @@ MD5:
 TL;DR
 
 ```
-$ git clone https://github.com/u0d7i/n9h reference-install
-$ cd reference-install
-$ git filter-branch --subdirectory-filter reference-install/
-$ sudo ./ref-pc.sh all
+$ git clone https://github.com/u0d7i/n9h
+$ sudo n9h/reference-install/ref-pc.sh all
 ```
 
 ## Firmware modifications
