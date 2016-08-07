@@ -27,9 +27,11 @@ usage(){
 
 get_stuff(){
   echo "+ok: downloading stuff..."
-  BASEURL="http://maemo.cloud-7.de/maemo5/fiasco+co"
-  wget -c "$BASEURL/_$VANILLA" -O $VANILLA
-  wget -c "$BASEURL/_$COMBINED" -O $COMBINED
+  BASEURL="http://maemo-repos.com/apt-mirror/tablets-dev"
+  wget -c "$BASEURL/nokia_N900/$VANILLA" 
+  wget -c "$BASEURL/nokia_N900/$COMBINED"
+  FLURL="$BASEURL/maemo_dev_env_downloads/maemo_flasher-3.5_2.5.2.2.tar.gz"
+  wget -qO-  "$FLURL"  | tar -zxv maemo_flasher-3.5_2.5.2.2/flasher-3.5 --strip 1
 }
 
 md5s(){
