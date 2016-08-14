@@ -131,6 +131,7 @@ mod_rootfs(){
     # binaries
     echo "+ok: replace busybox..."
     # DANGER! replacing core system component
+    # sorry, Joerg, I know it's terribly wrong
     if [ -e ${FILES}/busybox ]; then
       # make sure we know exactly what we are doing
       echo -n "MD5: "
