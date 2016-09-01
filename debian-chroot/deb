@@ -27,7 +27,7 @@ case $1 in
     qchroot /dev/mapper/${LM} $CR
     ;;
   off)
-    closechroot
+    closechroot $CR
     if [ -e /dev/mapper/${LM} ]; then
       echo "luksClose $LM..."
       cryptsetup luksClose $LM
