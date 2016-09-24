@@ -1,0 +1,4 @@
+keymaps 0-4
+keycode 29 = SCtrl
+keycode 42 = SShift
+keycode 100 = SAltGr
