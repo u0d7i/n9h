@@ -2,7 +2,7 @@
 
 ## Prerequisites
 * [N900 reference install](../reference-install)
-* [rescueOS](http://n900.quitesimple.org/rescueOS/)
+* [rescueOS](http://n900.quitesimple.org/rescueOS/) ([github](https://github.com/NIN101/N900_RescueOS), [releases](https://github.com/NIN101/N900_RescueOS/releases))
 
 ### Installing rescueOS on-device via u-boot
 
