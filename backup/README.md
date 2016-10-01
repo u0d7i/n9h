@@ -34,13 +34,16 @@ Load Address: 00000000
 Entry Point:  00000000
 ```
 
-Place both images to /home/user/MyDocs/bootmenu.img.d/
+Place both images to /opt/boot/
+
 Create /etc/bootmenu.d/99-rescueOS-1.2.item , containing 
 
 ```
 ITEM_NAME="rescueOS-1.2"
-ITEM_KERNEL="rescueOS-1.2-kernel.uImage"
-ITEM_INITRD="rescueOS-1.2-initrd.uImage"
+ITEM_DEVICE="${INT_CARD}p2"
+ITEM_FSTYPE="ext3"
+ITEM_KERNEL="/opt/boot/rescueOS-1.2-kernel.uImage"
+ITEM_INITRD="/opt/boot/rescueOS-1.2-initrd.uImage"
 ITEM_CMDLINE="rootdelay root=/dev/ram0"
 ```
 
