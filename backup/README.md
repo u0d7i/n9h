@@ -52,3 +52,12 @@ and update bootmenu:
 ```
 # u-boot-update-bootmenu
 ```
+
+#### Notes
+
+telnetd credentials:
+
+```
+user: root
+pass: rootme
+```
