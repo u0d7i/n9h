@@ -6,7 +6,7 @@
 
 ### Installing rescueOS on-device via u-boot
 
-install u-boot (if not already):
+install u-boot on n900 (if not already):
 
 ```
 # apt-get install u-boot-flasher kernel-power-bootimg
@@ -14,7 +14,25 @@ install u-boot (if not already):
 # u-boot-update-bootmenu
 ```
 
-Download latest rescueOS from above. Convert kernel and initrd images to uImage format:
+Download latest rescueOS from the links above.
+
+Modify and repack initrd if needed (I add custom keyboard layout and backup/restore scripts):
+
+```
+$ mv rescueOS-1.3.img rescueOS-1.3.img.orig
+$ mkdir initrd-{old,new}
+$ sudo mount -t cramfs rescueOS-1.3.img.orig initrd-old/
+$ cd initrd-old/
+$ sudo find . | sudo cpio -pdm ../initrd-new
+$ cd ..
+$ sudo umount initrd-old/
+$ sudo cp mod.bkeymap initrd-new/rescueOS/nokia-n900.kmap
+$ sudo cp backup.sh initrd-new/rescueOS/
+$ sudo cp restore.sh initrd-new/rescueOS/
+$ sudo mkcramfs initrd-new/ rescueOS-1.3.img
+```
+
+Convert kernel and initrd images to uImage format:
 
 ```
 $ mkimage -A arm -O linux -T kernel -C none -a 80008000 -e 80008000 -n rescueOS-1.3-kernel -d rescueOS_n900_kernel_1.3.zImage rescueOS-1.3-kernel.uImage
