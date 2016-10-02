@@ -54,7 +54,7 @@ Entry Point:  00000000
 
 Place both images to /opt/boot/
 
-Create /etc/bootmenu.d/99-rescueOS-1.2.item , containing 
+Create /etc/bootmenu.d/99-rescueOS-1.3.item , containing 
 
 ```
 ITEM_NAME="rescueOS-1.3"
