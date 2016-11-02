@@ -1,0 +1,15 @@
+#!/bin/bash
+# battery usage reporter for tmux statusbar under native Debian on n900
+
+# basedir
+BD=/sys/devices/platform/68000000.ocp/48072000.i2c/i2c-2/2-0055/power_supply/bq27200-0
+
+CAP=$(cat ${BD}/capacity)
+
+if grep Charging ${BD}/status > /dev/null; then
+  echo -n "+"
+  TT=$(date -d@$(cat ${BD}/time_to_full_now) -u +%H:%M)
+else
+  TT=$(date -d@$(cat ${BD}/time_to_empty_now) -u +%H:%M)
+fi
+echo "${CAP}%(${TT})"
