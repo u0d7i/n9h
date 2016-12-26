@@ -88,6 +88,55 @@ Kernel is lacking acpi support, but acpid is present in default install - `power
 which can be handled by acpid. The rest of hardware buttons/sensors, even generating input events (see /dev/input/) are not genetrating
 acpi events, so, `inputlirc` can be used to handle the rest.
 
+```
+# acpi_listen 
+button/screenlock SCRNLCK 00000080 00000000
+^C
+```
+
+```
+# apt-get install evtest
+
+# evtest 
+No device specified, trying to scan all of /dev/input/event*
+Available devices:
+/dev/input/event0:      twl4030_pwrbutton
+/dev/input/event1:      TWL4030 Keypad
+/dev/input/event2:      RX-51 AV Jack
+/dev/input/event3:      twl4030:vibrator
+/dev/input/event4:      ST LIS3LV02DL Accelerometer
+/dev/input/event5:      TSC200X touchscreen
+/dev/input/event6:      gpio_keys
+Select the device event number [0-6]: 6
+Input driver version is 1.0.1
+Input device ID: bus 0x19 vendor 0x1 product 0x1 version 0x100
+Input device name: "gpio_keys"
+Supported events:
+  Event type 0 (EV_SYN)
+  Event type 1 (EV_KEY)
+    Event code 152 (KEY_SCREENLOCK)
+    Event code 212 (KEY_CAMERA)
+    Event code 528 (?)
+  Event type 5 (EV_SW)
+    Event code 9 (SW_CAMERA_LENS_COVER)
+    Event code 10 (SW_KEYPAD_SLIDE)
+    Event code 11 (SW_FRONT_PROXIMITY)
+Properties:
+Testing ... (interrupt to exit)
+Event: time 1482764483.629455, type 5 (EV_SW), code 10 (SW_KEYPAD_SLIDE), value 1
+Event: time 1482764483.629455, -------------- EV_SYN ------------
+Event: time 1482764485.010314, type 5 (EV_SW), code 10 (SW_KEYPAD_SLIDE), value 0
+Event: time 1482764485.010314, -------------- EV_SYN ------------
+Event: time 1482764487.062957, type 1 (EV_KEY), code 152 (KEY_SCREENLOCK), value 1
+Event: time 1482764487.062957, -------------- EV_SYN ------------
+Event: time 1482764487.217742, type 1 (EV_KEY), code 152 (KEY_SCREENLOCK), value 0
+Event: time 1482764487.217742, -------------- EV_SYN ------------
+Event: time 1482764491.275604, type 5 (EV_SW), code 9 (SW_CAMERA_LENS_COVER), value 0
+Event: time 1482764491.275604, -------------- EV_SYN ------------
+Event: time 1482764492.174255, type 5 (EV_SW), code 9 (SW_CAMERA_LENS_COVER), value 1
+Event: time 1482764492.174255, -------------- EV_SYN ------------
+```
+
 # TODO
 
 - performance tests for encrypted swap on SD card
