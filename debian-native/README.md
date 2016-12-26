@@ -60,10 +60,31 @@ $ sudo mount /dev/sdd1 /mnt/boot/
 ```
 
 # Install
-Follow procedure described [here](https://github.com/dderby/debian900)
+Follow the procedure described [here](https://github.com/dderby/debian900)
 
 I did some modification to my [fork](https://github.com/u0d7i/debian900) of original debian900 repo
 to include the following:
 - encrypted root support
 - keyboard led support in initrd
 - debian.conf.local is included to illustrate the usage
+
+```
+$ git clone https://github.com/u0d7i/debian900
+$ cd debian900
+$ ./build_kernel.sh
+$ sudo ./install_debian.sh
+$ sudo cp configure_u-boot.sh /mnt/boot
+$ sudo chmod +x /mnt/boot/configure_u-boot.sh
+$ sudo umount /mnt/boot
+$ sudo umount /mnt
+$ sudo cryptsetup luksClose crypt_sd2
+```
+
+# TODO
+
+- battery readings fix 
+- keybord led off on lid close
+- kbd lock, kbd led, screen off/on on slide
+- unicode setup on boot/login
+- modem for mobile data
+
