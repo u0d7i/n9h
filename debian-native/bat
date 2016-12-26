@@ -2,14 +2,25 @@
 # battery usage reporter for tmux statusbar under native Debian on n900
 
 # basedir
-BD=/sys/devices/platform/68000000.ocp/48072000.i2c/i2c-2/2-0055/power_supply/bq27200-0
+BD="/sys/class/power_supply/bq27200-0"
 
-CAP=$(cat ${BD}/capacity)
-
+# 'X' means 'uncalibrated'
+CAP=$(cat ${BD}/capacity 2>/dev/null || echo "X")
+ST=${BD}/status}
 if grep Charging ${BD}/status > /dev/null; then
-  echo -n "+"
-  TT=$(date -d@$(cat ${BD}/time_to_full_now) -u +%H:%M)
+  ST="+"
 else
-  TT=$(date -d@$(cat ${BD}/time_to_empty_now) -u +%H:%M)
+  ST=""
 fi
-echo "${CAP}%(${TT})"
+
+if [ "$CAP" == "X" ]; then
+  # battery is uncalibrated
+  TT="N/A"
+else
+  if [ "$ST" == "+" ]; then
+    TT=$(date -d@$(cat ${BD}/time_to_full_now) -u +%H:%M)
+  else
+    TT=$(date -d@$(cat ${BD}/time_to_empty_now) -u +%H:%M)
+  fi
+fi
+echo "${ST}${CAP}%(${TT})"
