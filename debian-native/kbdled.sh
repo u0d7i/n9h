@@ -11,7 +11,7 @@ getbr(){
 
 setbr(){
   BR=$1
-  seq 6 | while read n;
+  for n in 1 2 3 4 5 6
   do
     echo $BR > /sys/class/leds/lp5523\:kb${n}/brightness
   done
