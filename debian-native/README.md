@@ -82,6 +82,7 @@ $ sudo cryptsetup luksClose crypt_sd2
 
 # TODO
 
+- performance tests for encrypted swap on SD card
 - keyboard led off on lid close
 - kbd lock, kbd led, screen off/on on slide
 - unicode setup on boot/login
