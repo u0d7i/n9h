@@ -80,6 +80,14 @@ $ sudo umount /mnt
 $ sudo cryptsetup luksClose crypt_sd2
 ```
 
+# Setup
+
+## Hardware key event mapping
+
+Kernel is lacking acpi support, but acpid is present in default install - `power key` and `screen lock key` are generating acpi events
+which can be handled by acpid. The rest of hardware buttons/sensors, even generating input events (see /dev/input/) are not genetrating
+acpi events, so, `inputlirc` can be used to handle the rest.
+
 # TODO
 
 - performance tests for encrypted swap on SD card
