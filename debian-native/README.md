@@ -62,3 +62,8 @@ $ sudo mount /dev/sdd1 /mnt/boot/
 # Install
 Follow procedure described [here](https://github.com/dderby/debian900)
 
+I did some modification to my [fork](https://github.com/u0d7i/debian900) of original debian900 repo
+to include the following:
+- encrypted root support
+- keyboard led support in initrd
+- debian.conf.local is included to illustrate the usage
