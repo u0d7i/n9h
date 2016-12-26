@@ -83,7 +83,7 @@ $ sudo cryptsetup luksClose crypt_sd2
 # TODO
 
 - battery readings fix 
-- keybord led off on lid close
+- keyboard led off on lid close
 - kbd lock, kbd led, screen off/on on slide
 - unicode setup on boot/login
 - modem for mobile data
