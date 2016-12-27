@@ -1,0 +1,3 @@
+# button/screenlock SCRNLCK 00000080 00000000
+event=button/screenlock
+action=/etc/acpi/screenlock.sh
