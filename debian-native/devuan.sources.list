@@ -1,0 +1,5 @@
+deb http://auto.mirror.devuan.org/merged jessie main contrib non-free
+deb http://auto.mirror.devuan.org/merged jessie-security main contrib non-free
+deb http://auto.mirror.devuan.org/merged jessie-updates main contrib non-free
+deb http://auto.mirror.devuan.org/merged jessie-proposed-updates main contrib non-free
+deb http://auto.mirror.devuan.org/merged jessie-backports main contrib non-free
