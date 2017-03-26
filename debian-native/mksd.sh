@@ -28,7 +28,7 @@ cleanup(){
 cryptoinit(){
   echo "+ Filling card with random data..."
   KEYFILE="$(mktemp)"
-  CRNAME="sdd_crypt_$(mktemp -u -d XXXX)"
+  CRNAME="sdcrypt_$(mktemp -u -d XXXX)"
   dd bs=512 count=4 if=/dev/urandom of=${KEYFILE} iflag=fullblock
   cryptsetup luksFormat -q -v -d ${KEYFILE} ${SD}
   cryptsetup luksOpen -d ${KEYFILE} ${SD} ${CRNAME}
