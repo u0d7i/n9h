@@ -29,9 +29,9 @@ usage(){
 
 get_stuff(){
   echo "+ok: downloading stuff..."
-  wget -c "$BASEURL/nokia_N900/$VANILLA" 
-  wget -c "$BASEURL/nokia_N900/$COMBINED"
-  wget -c "$BASEURL/maemo_dev_env_downloads/$FLAR"
+  wget -c "$BASEURL/files/$VANILLA" 
+  wget -c "$BASEURL/files/$COMBINED"
+  wget -c "$BASEURL/tools/files//$FLAR"
   tar --wildcards -zxvf "$FLAR"  "*/${FLASHER:2}" --strip 1
 }
 
