@@ -268,3 +268,7 @@ and let device boot and init system.
 
 ## On-device modifications
 
+TL;DR
+
+Launch 'Root terminal', navigate to `ref` directory, and execute `ref-md.sh` script.
+
