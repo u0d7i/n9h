@@ -16,9 +16,10 @@ install u-boot on n900 (if not already):
 
 Download latest rescueOS from the links above.
 
-Modify and repack initrd if needed (I add custom keyboard layout and backup/restore scripts):
+Modify and repack initrd if needed (I add custom keyboard layout and backup/restore scripts, you need cramfs support in kernel):
 
 ```
+$ sudo apt-get install cramfsprogs
 $ mv rescueOS-1.3.img rescueOS-1.3.img.orig
 $ mkdir initrd-{old,new}
 $ sudo mount -t cramfs rescueOS-1.3.img.orig initrd-old/
@@ -35,6 +36,8 @@ $ sudo mkcramfs initrd-new/ rescueOS-1.3.img
 Convert kernel and initrd images to uImage format:
 
 ```
+$ sudo apt-get install u-boot-tools
+
 $ mkimage -A arm -O linux -T kernel -C none -a 80008000 -e 80008000 -n rescueOS-1.3-kernel -d rescueOS_n900_kernel_1.3.zImage rescueOS-1.3-kernel.uImage
 Image Name:   rescueOS-1.3-kernel
 Created:      Sat Oct  1 22:41:07 2016
