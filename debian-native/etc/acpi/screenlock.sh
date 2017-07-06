@@ -16,6 +16,7 @@ if [ "$STATUS" != "0" ]; then
   do
     echo 0 > /sys/class/leds/lp5523\:kb${n}/brightness
   done
+  echo 1 > /sys/class/graphics/fb0/blank
 else
   # "Off"
   echo $SL > $LED
@@ -23,4 +24,5 @@ else
   do
     echo $KL > /sys/class/leds/lp5523\:kb${n}/brightness
   done
+  echo 0 > /sys/class/graphics/fb0/blank
 fi
