@@ -3,28 +3,22 @@
 
 # basedir
 BD="/sys/class/power_supply/bq27200-0"
-
 # 'X' means 'uncalibrated'
 CAP=$(cat ${BD}/capacity 2>/dev/null || echo "X")
-ST=${BD}/status}
-if grep Charging ${BD}/status > /dev/null; then
-  ST="+"
-else
-  ST=""
-fi
-
+STATUS=$(cat ${BD}/status 2>/dev/null)
+ST=""
+TT=""
 if [ "$CAP" == "X" ]; then
   # battery is uncalibrated
   TT="N/A"
 else
-  if [ "$ST" == "+" ]; then
-    TT=$(date -d@$(cat ${BD}/time_to_full_now) -u +%H:%M)
-  else
-    if grep Full ${BD}/status > /dev/null; then
-      TT="Full"
-    else
-      TT=$(date -d@$(cat ${BD}/time_to_empty_now) -u +%H:%M)
-    fi
+  if [ "$STATUS" == "Charging" ]; then
+    ST="+"
+    TT="($(date -d@$(cat ${BD}/time_to_full_now) -u +%H:%M))"
+  elif [ "$STATUS" == "Discharging" ]; then
+    TT="($(date -d@$(cat ${BD}/time_to_empty_now) -u +%H:%M))"
+  elif [ "$STATUS" == "Full" ]; then
+    TT="Full"
   fi
 fi
 echo "${ST}${CAP}%(${TT})"
