@@ -20,7 +20,11 @@ else
   if [ "$ST" == "+" ]; then
     TT=$(date -d@$(cat ${BD}/time_to_full_now) -u +%H:%M)
   else
-    TT=$(date -d@$(cat ${BD}/time_to_empty_now) -u +%H:%M)
+    if grep Full ${BD}/status > /dev/null; then
+      TT="Full"
+    else
+      TT=$(date -d@$(cat ${BD}/time_to_empty_now) -u +%H:%M)
+    fi
   fi
 fi
 echo "${ST}${CAP}%(${TT})"
