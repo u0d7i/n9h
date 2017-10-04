@@ -1,10 +1,11 @@
 #!/bin/bash
 # reference install script to run on a pc
 
-BASEURL="http://maemo-repos.com/apt-mirror/tablets-dev"
+BASEURL="http://www.fladnag.net/downloads/telephone/n900"
 VANILLA="RX-51_2009SE_10.2010.13-2.VANILLA_PR_EMMC_MR0_ARM.bin"
 COMBINED="RX-51_2009SE_21.2011.38-1_PR_COMBINED_MR0_ARM.bin"
 FLAR="maemo_flasher-3.5_2.5.2.2.tar.gz"
+WGET="wget  --user-agent='Mozilla/5.0'" # i'm not a robot
 FLASHER="./flasher-3.5"
 ROOTFS="rootfs_RX-51_2009SE_21.2011.38-1_PR_MR0"
 MNTPNT="/mnt/n900"
@@ -29,9 +30,9 @@ usage(){
 
 get_stuff(){
   echo "+ok: downloading stuff..."
-  wget -c "$BASEURL/files/$VANILLA" 
-  wget -c "$BASEURL/files/$COMBINED"
-  wget -c "$BASEURL/tools/files//$FLAR"
+  $WGET -c "$BASEURL/$VANILLA"
+  $WGET -c "$BASEURL/$COMBINED"
+  $WGET -c "$BASEURL/tools/$FLAR"
   tar --wildcards -zxvf "$FLAR"  "*/${FLASHER:2}" --strip 1
 }
 
