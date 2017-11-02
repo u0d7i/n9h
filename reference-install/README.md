@@ -20,8 +20,8 @@
 ## Prerequisites
 
 ### Flashers
-* Nokia official [flasher-3.5] (https://wiki.maemo.org/Documentation/Maemo_5_Developer_Guide/Development_Environment/Maemo_Flasher-3.5)
-* [0xFFFF] (https://talk.maemo.org/showthread.php?t=87996)
+* Nokia official [flasher-3.5](https://wiki.maemo.org/Documentation/Maemo_5_Developer_Guide/Development_Environment/Maemo_Flasher-3.5)
+* [0xFFFF](https://talk.maemo.org/showthread.php?t=87996)
 
 Running Nokia flasher-3.5 `i386` binary on `x86_64`  Debian:
 
