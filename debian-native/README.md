@@ -136,6 +136,15 @@ Event: time 1482764491.275604, -------------- EV_SYN ------------
 Event: time 1482764492.174255, type 5 (EV_SW), code 9 (SW_CAMERA_LENS_COVER), value 1
 Event: time 1482764492.174255, -------------- EV_SYN ------------
 ```
+# Modem and mobile data
+
+Setting up modem for mobile data with [ofono](https://en.wikipedia.org/wiki/OFono) is described
+[here](http://musicnaut.iki.fi/txt/nokia_modem.txt) (local copy [here](nokia_modem.txt)).
+
+There is a bunch of [very handy python scripts](https://github.com/rilmodem/ofono/tree/master/test)
+on ofono github repo, based on which I crafted (bulky and hacky) version of
+[my own modem management script](ofo)
+until I find/code an easy direct way without dbus/ofono.
 
 # TODO
 

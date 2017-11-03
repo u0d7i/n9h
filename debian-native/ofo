@@ -1,0 +1,142 @@
+#!/usr/bin/python3
+""" n900 native linux ofono interface """
+
+import sys
+import os
+from time import sleep
+try:
+    import dbus
+except ImportError:
+    sys.exit("-err: no dbus python module installed")
+# check if we are root
+# or change it in /etc/dbus-1/system.d/ofono.conf
+if os.geteuid() != 0:
+    sys.exit("-err: you are not root")
+
+def usage():
+    ''' usage and exit '''
+    print("n900 native linux ofono interface")
+    print("Usage: %s <command>" % os.path.basename(sys.argv[0]))
+    print("""commands:
+e  : enable
+d  : disable
+s  : status
+""")
+    sys.exit()
+
+if len(sys.argv) == 1:
+    usage()
+
+if sys.argv[1] == "s":
+    ''' status '''
+    try:
+        bus = dbus.SystemBus()
+    except dbus.exceptions.DBusException:
+        sys.exit("-err: dbus is unavailable")
+    try:
+        manager = dbus.Interface(bus.get_object('org.ofono', '/'), 'org.ofono.Manager')
+    except dbus.exceptions.DBusException:
+        sys.exit("-err: ofono is unavailable via dbus")
+    modems = manager.GetModems()
+    path = modems[0][0]
+    modem = dbus.Interface(bus.get_object('org.ofono', path), 'org.ofono.Modem')
+    modem_props = modem.GetProperties()
+    if modem_props["Powered"] == 1:
+        print("Modem is powered")
+        if modem_props["Online"] == 1:
+            print("Modem is online")
+            reg = dbus.Interface(bus.get_object('org.ofono', path), 'org.ofono.NetworkRegistration')
+            reg_props = reg.GetProperties()
+            print("Network is %s" % reg_props['Status'])
+        else:
+            print("Modem is offline")
+    else:
+        print("Modem is not powered")
+
+elif sys.argv[1] == "e":
+    try:
+        bus = dbus.SystemBus()
+    except dbus.exceptions.DBusException:
+        print("dbus is unavailable, trying to start...")
+        os.system("/etc/init.d/dbus start")
+        try:
+            bus = dbus.SystemBus()
+        except dbus.exceptions.DBusException:
+            sys.exit("-err: unable to start dbus")
+    try:
+        manager = dbus.Interface(bus.get_object('org.ofono', '/'), 'org.ofono.Manager')
+    except dbus.exceptions.DBusException:
+        print("ofono is unavailable, trying to start...")
+        os.system("/etc/init.d/ofono start")
+        try:
+            manager = dbus.Interface(bus.get_object('org.ofono', '/'), 'org.ofono.Manager')
+        except dbus.exceptions.DBusException:
+            sys.exit("-err: unable to start ofono")
+    # FIXME: handle no modem/driver exception
+    modems = manager.GetModems()
+    path = modems[0][0]
+    modem = dbus.Interface(bus.get_object('org.ofono', path), 'org.ofono.Modem')
+    # power-on-modem
+    print("modem %s: powering on..." % (path))
+    modem.SetProperty("Powered", dbus.Boolean(1), timeout=120)
+    # online-modem
+    print("modem %s: going online..." % (path))
+    modem.SetProperty("Online", dbus.Boolean(1), timeout=120)
+    # wait while we are online
+    print("net registration: ", end="", flush=True)
+    reg = dbus.Interface(bus.get_object('org.ofono', path), 'org.ofono.NetworkRegistration')
+    reg_status=0
+    for _ in range(25):
+        try:
+            reg_props = reg.GetProperties()
+        except dbus.exceptions.DBusException:
+            print("-", end="", flush=True)
+        else:
+            if reg_props['Status'] != "registered":
+                print(".", end="", flush=True)
+            else:
+                print("+", end="", flush=True)
+                reg_status=1
+                break
+        sleep(1)
+    print(" %s" % reg_props['Status'])
+    if reg_status != 1:
+        sys.exit("-err: unable to register")
+    print("activating context...")
+    connman = dbus.Interface(bus.get_object('org.ofono', path),
+                                            'org.ofono.ConnectionManager')
+    contexts = connman.GetContexts()
+    if (len(contexts) == 0):
+        sys.exit("-err: no contexts available")
+    context_path = contexts[0][0]
+    context = dbus.Interface(bus.get_object('org.ofono', context_path),
+                                            'org.ofono.ConnectionContext')
+    try:
+        context.SetProperty("Active", dbus.Boolean(1), timeout=100)
+    #except dbus.DBusException as e:
+    except dbus.DBusException:
+        sys.exit("-err: can't activate context")
+    context_props = context.GetProperties()
+    if_settings = context_props["Settings"]
+    cmd = cmd = "ifconfig " + if_settings["Interface"] + " " + if_settings["Address"]
+    os.system(cmd)
+    cmd = cmd = "route add default gw " + if_settings["Address"]
+    os.system(cmd)
+    cmd = "echo  'nameserver " + if_settings["DomainNameServers"][0] + '\\nnameserver ' + if_settings["DomainNameServers"][1] + "' > /etc/resolv.conf"
+    os.system(cmd)
+
+elif sys.argv[1] == "d":
+    # FIXME: add exception handling
+    bus = dbus.SystemBus()
+    manager = dbus.Interface(bus.get_object('org.ofono', '/'), 'org.ofono.Manager')
+    modems = manager.GetModems()
+    path = modems[0][0]
+    modem = dbus.Interface(bus.get_object('org.ofono', path), 'org.ofono.Modem')
+    print("modem %s, going offline..." % (path))
+    modem.SetProperty("Online", dbus.Boolean(0), timeout=120)
+    print("modem %s, powering off..." % path)
+    modem.SetProperty("Powered", dbus.Boolean(0), timeout=120)
+    os.system("/etc/init.d/ofono stop")
+    os.system("/etc/init.d/dbus stop")
+else:
+    usage()
