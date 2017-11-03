@@ -147,7 +147,6 @@ Short version (I only use dbus and ofono for mobile data, will start them on dem
 $ sudo apt-get install ofono python3 python3-dbus
 $ sudo update-rc.d -f ofono remove
 $ sudo update-rc.d -f dbus remove
-
 ```
 
 There is a bunch of [very handy python scripts](https://github.com/rilmodem/ofono/tree/master/test)
