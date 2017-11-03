@@ -1,0 +1,155 @@
+
+	NOKIA N900 MODEM AND MAINLINE LINUX KERNEL
+	==========================================
+	CREATED: 2015-11-05
+	UPDATED: 2017-09-12 (aaro@darkstar)
+
+This document tries to give step-by-step instructions for testing Nokia N900
+modem with mainline Linux kernel.
+
+So far only GPRS/3G data connection is covered.
+
+The instructions are based on earlier instructions by Sebastian Reichel and
+Pavél Machek posted on linux-omap.
+
+Software requirements
+---------------------
+Besides Linux kernel, busybox and C library, the following bloaty applications
+and packages need to be installed:
+
+	ofono	(needed to interact with the modem)
+	dbus	(needed by ofono, it's "user interface")
+	eudev	(needed by ofono to detect the modem)
+	mdbus2	(command line utility to interact with dbus)
+
+Kernel configuration requires at least:
+
+	CONFIG_PHONET
+	CONFIG_TUN
+	CONFIG_HSI 
+	CONFIG_OMAP_SSI
+	CONFIG_NOKIA_MODEM
+	CONFIG_CMT_SPEECH
+	CONFIG_SSI_PROTOCOL
+	CONFIG_HSI_CHAR
+
+Modem wakeup
+------------
+Symlink /dev/cmt to /sys/bus/hsi/devices/n900-modem.
+
+Userspace needs to have ofono, dbus and udev daemons running.
+
+You need to have ofono udev rules installed, at least ofono 1.16 does not have
+any other way to learn about the system's modem.
+
+Load all the kernel modules mentioned above. Note that "omap_ssi_port" and
+"cmt_speech" may need to be explicitly loaded, and without it "nokia_modem"
+does not probe. No module parameters are needed.
+
+Check that services are running:
+
+	$ mdbus2 -s
+	org.freedesktop.DBus
+	org.ofono
+
+and that the modem is detected:
+
+	$ mdbus2 -s org.ofono
+	/
+	/n900_0
+
+Set modem powered & online:
+
+	$ mdbus2 -s org.ofono /n900_0 org.ofono.Modem.SetProperty Powered true
+	$ mdbus2 -s org.ofono /n900_0 org.ofono.Modem.SetProperty Online true
+
+Check the status with:
+
+	$ mdbus2 -s org.ofono /n900_0 org.ofono.Modem.GetProperties
+
+Also check the SIM status with:
+
+	$ mdbus2 -s org.ofono /n900_0 org.ofono.SimManager.GetProperties
+
+You may need to enter the PIN code (replace 1234 with your PIN):
+
+	$ mdbus2 -s org.ofono /n900_0 org.ofono.SimManager.EnterPin pin 1234
+
+If you are lucky you should be now on the network, check with:
+
+	$ mdbus2 -s org.ofono /n900_0 org.ofono.NetworkRegistration.GetProperties
+
+You can also scan all the networks:
+
+	$ mdbus2 -s org.ofono /n900_0 org.ofono.NetworkRegistration.Scan
+
+Data connection setup
+---------------------
+First create a context:
+
+	$ mdbus2 -s org.ofono /n900_0 org.ofono.ConnectionManager.AddContext internet
+
+This will likely create and output "/n900_0/context1". You can check it with:
+
+	$ mdbus2 -s org.ofono /n900_0 org.ofono.ConnectionManager.GetContexts
+
+(
+
+Redundant contexts, if you have created them by accident, can be deleted with
+e.g:
+
+	$ mdbus2 -s org.ofono /n900_0 org.ofono.ConnectionManager.RemoveContext /n900_0/context2
+
+)
+
+Next set the APN. You need to probably check this from your operator. Below one
+only works for Finnish Elisa/Saunalahti:
+
+	$ mdbus2 -s org.ofono /n900_0/context1 org.ofono.ConnectionContext.SetProperty AccessPointName '"internet.saunalahti"'
+
+(You may need to set also some other properties too, check from the operator's
+documentation.)
+
+Now you can try to active the connection:
+
+	$ mdbus2 -s org.ofono /n900_0/context1 org.ofono.ConnectionContext.SetProperty Active true
+
+After this, you should get gprs0 interface:
+
+	$ ifconfig gprs0
+	gprs0     Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+	          UP POINTOPOINT RUNNING NOARP  MTU:1400  Metric:1
+	          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+	          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+	          collisions:0 txqueuelen:10
+	          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+Now check the IP addresses using the command:
+
+	$ mdbus2 -s org.ofono /n900_0/context1 org.ofono.ConnectionContext.GetProperties
+
+This should output your IP address, netmask and nameserver addresses. Then just
+configure them manually:
+
+	$ ifconfig gprs0 <IP address>
+	$ route add default gw <IP address>
+	$ cat << EOF > /etc/resolv.conf
+	nameserver <name server 1>
+	nameserver <name server 2>
+	EOF
+
+Then just launch your favourite net application and check if the connection
+works. :-)
+
+	$ lynx www.lwn.net
+
+Note that some operators might give you a public IP address. So take care you
+are not running any insecure services on your device.
+
+Troubleshooting
+---------------
+Check the content of /dev/cmt.
+
+Start ofono on foreground with --debug option.
+
+src: http://musicnaut.iki.fi/txt/nokia_modem.txt
