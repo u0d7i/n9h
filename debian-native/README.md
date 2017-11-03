@@ -136,7 +136,7 @@ Event: time 1482764491.275604, -------------- EV_SYN ------------
 Event: time 1482764492.174255, type 5 (EV_SW), code 9 (SW_CAMERA_LENS_COVER), value 1
 Event: time 1482764492.174255, -------------- EV_SYN ------------
 ```
-# Modem and mobile data
+## Modem and mobile data
 
 Setting up modem for mobile data with [ofono](https://en.wikipedia.org/wiki/OFono) is described
 [here](http://musicnaut.iki.fi/txt/nokia_modem.txt) (local copy [here](nokia_modem.txt)).
@@ -152,5 +152,4 @@ until I find/code an easy direct way without dbus/ofono.
 - keyboard led off on lid close
 - kbd lock, kbd led, screen off/on on slide
 - unicode setup on boot/login
-- modem for mobile data
 
