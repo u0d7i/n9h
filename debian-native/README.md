@@ -144,9 +144,11 @@ Setting up modem for mobile data with [ofono](https://en.wikipedia.org/wiki/OFon
 Short version (I only use dbus and ofono for mobile data, will start them on demand):
 
 ```
-$ sudo apt-get install ofono python3 python3-dbus
-$ sudo update-rc.d -f ofono remove
-$ sudo update-rc.d -f dbus remove
+# echo "nokia-modem" >>  /etc/modules
+# echo "options nokia-modem pm=0" > /etc/modprobe.d/nokia-modem.conf
+# apt-get install ofono python3 python3-dbus
+# update-rc.d -f ofono remove
+# update-rc.d -f dbus remove
 ```
 
 There is a bunch of [very handy python scripts](https://github.com/rilmodem/ofono/tree/master/test)
