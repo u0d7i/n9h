@@ -141,6 +141,15 @@ Event: time 1482764492.174255, -------------- EV_SYN ------------
 Setting up modem for mobile data with [ofono](https://en.wikipedia.org/wiki/OFono) is described
 [here](http://musicnaut.iki.fi/txt/nokia_modem.txt) (local copy [here](nokia_modem.txt)).
 
+Short version (I only use dbus and ofono for mobile data, will start them on demand):
+
+```
+$ sudo apt-get install ofono python3 python3-dbus
+$ sudo update-rc.d -f ofono remove
+$ sudo update-rc.d -f dbus remove
+
+```
+
 There is a bunch of [very handy python scripts](https://github.com/rilmodem/ofono/tree/master/test)
 on ofono github repo, based on which I crafted (bulky and hacky) version of
 [my own modem management script](ofo)
