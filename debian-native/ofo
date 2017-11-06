@@ -59,6 +59,7 @@ elif sys.argv[1] == "e":
     except dbus.exceptions.DBusException:
         print("dbus is unavailable, trying to start...")
         os.system("/etc/init.d/dbus start")
+        sleep(1)
         try:
             bus = dbus.SystemBus()
         except dbus.exceptions.DBusException:
@@ -68,6 +69,7 @@ elif sys.argv[1] == "e":
     except dbus.exceptions.DBusException:
         print("ofono is unavailable, trying to start...")
         os.system("/etc/init.d/ofono start")
+        sleep(1)
         try:
             manager = dbus.Interface(bus.get_object('org.ofono', '/'), 'org.ofono.Manager')
         except dbus.exceptions.DBusException:
@@ -97,6 +99,7 @@ elif sys.argv[1] == "e":
             else:
                 print("+", end="", flush=True)
                 reg_status=1
+                sleep(1)
                 break
         sleep(1)
     print(" %s" % reg_props['Status'])
@@ -112,7 +115,7 @@ elif sys.argv[1] == "e":
     context = dbus.Interface(bus.get_object('org.ofono', context_path),
                                             'org.ofono.ConnectionContext')
     try:
-        context.SetProperty("Active", dbus.Boolean(1), timeout=100)
+        context.SetProperty("Active", dbus.Boolean(1), timeout=120)
     #except dbus.DBusException as e:
     except dbus.DBusException:
         sys.exit("-err: can't activate context")
