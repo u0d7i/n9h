@@ -116,30 +116,38 @@ elif sys.argv[1] == "e":
                                             'org.ofono.ConnectionContext')
     try:
         context.SetProperty("Active", dbus.Boolean(1), timeout=120)
-    #except dbus.DBusException as e:
-    except dbus.DBusException:
-        sys.exit("-err: can't activate context")
+    except dbus.DBusException as e:
+        sys.exit("-err: can't activate context " + e)
     context_props = context.GetProperties()
     if_settings = context_props["Settings"]
     cmd = cmd = "ifconfig " + if_settings["Interface"] + " " + if_settings["Address"]
     os.system(cmd)
     cmd = cmd = "route add default gw " + if_settings["Address"]
     os.system(cmd)
-    cmd = "echo  'nameserver " + if_settings["DomainNameServers"][0] + '\\nnameserver ' + if_settings["DomainNameServers"][1] + "' > /etc/resolv.conf"
+    cmd = "echo  'nameserver " + if_settings["DomainNameServers"][0] + \
+          '\\nnameserver ' + if_settings["DomainNameServers"][1] + \
+          "' > /etc/resolv.conf"
     os.system(cmd)
 
 elif sys.argv[1] == "d":
-    # FIXME: add exception handling
-    bus = dbus.SystemBus()
-    manager = dbus.Interface(bus.get_object('org.ofono', '/'), 'org.ofono.Manager')
-    modems = manager.GetModems()
-    path = modems[0][0]
-    modem = dbus.Interface(bus.get_object('org.ofono', path), 'org.ofono.Modem')
-    print("modem %s, going offline..." % (path))
-    modem.SetProperty("Online", dbus.Boolean(0), timeout=120)
-    print("modem %s, powering off..." % path)
-    modem.SetProperty("Powered", dbus.Boolean(0), timeout=120)
-    os.system("/etc/init.d/ofono stop")
-    os.system("/etc/init.d/dbus stop")
+    try:
+        bus = dbus.SystemBus()
+    except dbus.exceptions.DBusException:
+        print("dbus is unavailable")
+    else:
+        try:
+            manager = dbus.Interface(bus.get_object('org.ofono', '/'), 'org.ofono.Manager')
+        except dbus.exceptions.DBusException:
+            print("ofono is unavailable")
+        else:
+            modems = manager.GetModems()
+            path = modems[0][0]
+            modem = dbus.Interface(bus.get_object('org.ofono', path), 'org.ofono.Modem')
+            print("modem %s, going offline..." % (path))
+            modem.SetProperty("Online", dbus.Boolean(0), timeout=120)
+            print("modem %s, powering off..." % path)
+            modem.SetProperty("Powered", dbus.Boolean(0), timeout=120)
+            os.system("/etc/init.d/ofono stop")
+        os.system("/etc/init.d/dbus stop")
 else:
     usage()
